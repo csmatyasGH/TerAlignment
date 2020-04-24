@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <types>
+        <members>AccountAllocatorCalloutMock</members>
+        <members>AccountTerrAlocatorQueueable</members>
+        <members>AccountTerrAlocatorQueueable_Test</members>
+        <members>AccountTerrNameBuilderQueueable</members>
+        <members>AccountTerrNameBuilderQueueable_test</members>
+        <members>AccountTerritoryNameBuilder</members>
+        <members>AccountTerritoryNameBuilder_Test</members>
+        <members>AccountTriggerXHandler</members>
+        <members>BooleanExpression</members>
+        <members>BooleanExpression_Test</members>
+        <members>TerritoryBuilderHelper</members>
+        <members>TerritoryBuilderHelper_test</members>
+        <members>batchProcessAccountAlocator</members>
+        <members>batchProcessAccountAlocator_Test</members>
+        <members>batchProcessAccountTerritory</members>
+        <members>batchProcessAccountTerritory_Test</members>    
+
+        <members>batchPlatformEvErrorTriggerXHandler</members>        
+
+      <!--  ****** Partner WSLD classes ****** -->  
+      <members>partnerSoapSforceCom</members>  
+      <members>sobjectPartnerSoapSforceCom</members>   
+
+      <!-- Partner Soap test from FuseIT. Thanks-->
+      <members>partnerSoapSforceComWebSvcTest</members>       
+      <members>partnerSoapSforceComMockImpl</members>            
+      <members>faultPartnerSoapSforceCom</members>
+
+      <!-- old class use it for regression test -->
+      <members>AccountTriggerXHandlerTest</members>   
+                         
+        <name>ApexClass</name> 
+    </types>
+    <types>
+        <members>BatchApexErrorEvents_Trigger</members>
+        <name>ApexTrigger</name>
+    </types>    
+    <types>
+        <members>vfp_SessionID_Getter</members>
+        <name>ApexPage</name>
+    </types>
+    <types>
+        <members>Account.FreezeAlignment__c</members>
+        <members>Account.Name4Terr__c</members>
+        <members>Account.Need_Alignment__c</members>
+        <members>Account.ShippingPostalCode4Terr__c</members>
+        <members>Account.TerritoryName_Suggested__c</members>
+        <members>Account.temp_AllocatorID__c</members>
+
+        <members>Account.Top_Parent_Billing_Country__c</members>
+        <members>Account.Top_Parent_Billing_Location__c</members>                
+
+        <members>Account.Top_Domestic_Parent_EmplCount__c</members>
+        <members>Account.Top_Domestic_Parent_Org_Size__c</members>
+        <members>Account.Top_Domestic_Parent_FTE__c</members>  
+        <members>Account.Top_Domestic_Parent_Billing_Location__c</members>  
+
+        <members>Account.Allignment_readiness__c</members>
+        <name>CustomField</name>
+    </types>
+    <types>
+        <members>TerritoryRelevantAFields.TerrField2Query</members>
+        <name>CustomMetadata</name>
+    </types>
+    <types>
+        <members>Alocation_History__c</members>
+        <members>Batch_Job_Monitor__c</members>
+        <members>Batch_Job_Monitor_Item__c</members>          
+        <members>TerritoryAllocatorItem__c</members>   <!-- DONE -->
+        <members>TerritoryAllocator__c</members>       <!-- DONE -->
+        <members>TerritoryRelevantAFields__mdt</members>
+      
+        <name>CustomObject</name>
+    </types>
+    <types>
+        <members>Alocation_History__c</members> <!-- not present in prod -->
+        <members>Batch_Job_Monitor__c</members>
+        <members>TerritoryAllocator__c</members>
+        <members>TerritoryAllocator__c</members>
+        <name>CustomTab</name>
+    </types>
+    <types>
+        <members>AlignAccount_Screen</members>
+        <members>BuildTerritorySOQL</members>
+        <members>Build_Territory_Elements</members>
+        <name>Flow</name>
+    </types>
+    <!--types>
+        <members>AlignAccount_Screen</members>
+        <members>BuildTerritorySOQL</members>
+        <members>Build_Territory_Elements</members>
+        <name>FlowDefinition</name>
+    </types-->
+    <types>
+        <members>Batch_Job_Monitor__c-Batch Job Monitor Layout</members>
+        <members>Batch_Job_Monitor__c-Worker</members>
+        <members>TerritoryAllocator__c-HUB Layout</members>
+        <members>TerritoryAllocator__c-Hub_Item</members>
+        <members>TerritoryAllocator__c-TerritoryAllocator Layout</members>
+        <!--members>Account-Admin Account Management Layout</members-->        
+        <name>Layout</name>
+    </types>
+    <types>
+        <members>Account.Align</members>
+        <name>QuickAction</name>
+    </types>
+    <version>46.0</version>
+</Package>
