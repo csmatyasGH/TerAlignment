@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Force_propagate__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>if true  force SOQL  even if no  chnage</description>
+    <externalId>false</externalId>
+    <label>Force propagate</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

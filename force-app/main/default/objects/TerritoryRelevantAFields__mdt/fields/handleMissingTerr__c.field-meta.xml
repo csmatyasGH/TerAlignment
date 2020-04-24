@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>handleMissingTerr__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>if is checked we include all Accounts where TerritoryName is missing. It is a kind of remediation operation. we do not care about CreatedDate an dis intended to fix the historical data</description>
+    <externalId>false</externalId>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <inlineHelpText>if is checked we include all Accounts where TerritoryName is missing</inlineHelpText>
+    <label>handleMissingTerr</label>
+    <type>Checkbox</type>
+</CustomField>

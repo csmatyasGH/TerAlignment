@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ALL_BOTTOM_LATAM</fullName>
+    <columns>NAME</columns>
+    <columns>ParentAllocator__c</columns>
+    <columns>Geo__c</columns>
+    <columns>Type__c</columns>
+    <columns>Active__c</columns>
+    <columns>isBottom__c</columns>
+    <columns>Territory_Name__c</columns>
+    <columns>Territory_Market__c</columns>
+    <columns>Segment__c</columns>
+    <columns>TerritoryTeam__c</columns>
+    <columns>Account_field__c</columns>
+    <columns>Order_of_Execution__c</columns>
+    <columns>SQL_StatusResult__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Geo__c</field>
+        <operation>equals</operation>
+        <value>LATAM</value>
+    </filters>
+    <filters>
+        <field>isBottom__c</field>
+        <operation>equals</operation>
+        <value>1</value>
+    </filters>
+    <label>ALL_BOTTOM_LATAM</label>
+</ListView>

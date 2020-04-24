@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>TerritoryTeam__c</fullName>
+    <externalId>false</externalId>
+    <label>TerritoryTeam</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>NORAM HIED East</fullName>
+                <default>false</default>
+                <label>NORAM HIED East</label>
+            </value>
+            <value>
+                <fullName>NORAM HIED West</fullName>
+                <default>false</default>
+                <label>NORAM HIED West</label>
+            </value>
+            <value>
+                <fullName>NORAM HIED Central</fullName>
+                <default>false</default>
+                <label>NORAM HIED Central</label>
+            </value>
+            <value>
+                <fullName>NORAM K12 East</fullName>
+                <default>false</default>
+                <label>NORAM K12 East</label>
+            </value>
+            <value>
+                <fullName>NORAM K12 Central</fullName>
+                <default>false</default>
+                <label>NORAM K12 Central</label>
+            </value>
+            <value>
+                <fullName>NORAM CORP ENT</fullName>
+                <default>false</default>
+                <label>NORAM CORP ENT</label>
+            </value>
+            <value>
+                <fullName>NORAM CORP MM 1</fullName>
+                <default>false</default>
+                <label>NORAM CORP MM 1</label>
+            </value>
+            <value>
+                <fullName>NORAM CORP MM 2</fullName>
+                <default>false</default>
+                <label>NORAM CORP MM 2</label>
+            </value>
+            <value>
+                <fullName>NORAM CORP SME 1</fullName>
+                <default>false</default>
+                <label>NORAM CORP SME 1</label>
+            </value>
+            <value>
+                <fullName>LATAM HIED Spanish</fullName>
+                <default>false</default>
+                <label>LATAM HIED Spanish</label>
+            </value>
+            <value>
+                <fullName>LATAM HIED Brazil</fullName>
+                <default>false</default>
+                <label>LATAM HIED Brazil</label>
+            </value>
+            <value>
+                <fullName>HIED AUSNZ</fullName>
+                <default>false</default>
+                <label>HIED AUSNZ</label>
+            </value>
+            <value>
+                <fullName>HIED ASIA</fullName>
+                <default>false</default>
+                <label>HIED ASIA</label>
+            </value>
+            <value>
+                <fullName>K12 AUSNZ</fullName>
+                <default>false</default>
+                <label>K12 AUSNZ</label>
+            </value>
+            <value>
+                <fullName>RTO AUSNZ</fullName>
+                <default>false</default>
+                <label>RTO AUSNZ</label>
+            </value>
+            <value>
+                <fullName>APAC CORP</fullName>
+                <default>false</default>
+                <label>APAC CORP</label>
+            </value>
+            <value>
+                <fullName>EMEA EDU ENT</fullName>
+                <default>false</default>
+                <label>EMEA EDU ENT</label>
+            </value>
+            <value>
+                <fullName>EMEA EDU MM UK</fullName>
+                <default>false</default>
+                <label>EMEA EDU MM UK</label>
+            </value>
+            <value>
+                <fullName>EMEA EDU MM BENONORD</fullName>
+                <default>false</default>
+                <label>EMEA EDU MM BENONORD</label>
+            </value>
+            <value>
+                <fullName>EMEA EDU MM EMERG</fullName>
+                <default>false</default>
+                <label>EMEA EDU MM EMERG</label>
+            </value>
+            <value>
+                <fullName>EMEA EDU INSIDE</fullName>
+                <default>false</default>
+                <label>EMEA EDU INSIDE</label>
+            </value>
+            <value>
+                <fullName>EMEA CORP ENT 1</fullName>
+                <default>false</default>
+                <label>EMEA CORP ENT 1</label>
+            </value>
+            <value>
+                <fullName>EMEA CORP MM</fullName>
+                <default>false</default>
+                <label>EMEA CORP MM</label>
+            </value>
+            <value>
+                <fullName>EMEA CORP IS</fullName>
+                <default>false</default>
+                <label>EMEA CORP IS</label>
+            </value>
+            <value>
+                <fullName>NORAM K12 MasteryConnect</fullName>
+                <default>false</default>
+                <label>NORAM K12 MasteryConnect</label>
+            </value>
+            <value>
+                <fullName>NORAM K12 Portfolium</fullName>
+                <default>false</default>
+                <label>NORAM K12 Portfolium</label>
+            </value>
+            <value>
+                <fullName>NORAM CORP SMB</fullName>
+                <default>false</default>
+                <label>NORAM CORP SMB</label>
+            </value>
+            <value>
+                <fullName>EMEA HIED UKI</fullName>
+                <default>false</default>
+                <label>EMEA HIED UKI</label>
+            </value>
+            <value>
+                <fullName>EMEA HIED DNB</fullName>
+                <default>false</default>
+                <label>EMEA HIED DNB</label>
+            </value>
+            <value>
+                <fullName>EMEA HIED IBERIA</fullName>
+                <default>false</default>
+                <label>EMEA HIED IBERIA</label>
+            </value>
+            <value>
+                <fullName>EMEA HIED ROEMEA</fullName>
+                <default>false</default>
+                <label>EMEA HIED ROEMEA</label>
+            </value>
+            <value>
+                <fullName>EMEA CORP ENT</fullName>
+                <default>false</default>
+                <label>EMEA CORP ENT</label>
+            </value>
+            <value>
+                <fullName>APAC HIED ANZ</fullName>
+                <default>false</default>
+                <label>APAC HIED ANZ</label>
+            </value>
+            <value>
+                <fullName>APAC HIED SEA</fullName>
+                <default>false</default>
+                <label>APAC HIED SEA</label>
+            </value>
+            <value>
+                <fullName>APAC HIED CHINA</fullName>
+                <default>false</default>
+                <label>APAC HIED CHINA</label>
+            </value>
+            <value>
+                <fullName>NORAM K12 West</fullName>
+                <default>false</default>
+                <label>NORAM K12 West</label>
+            </value>
+            <value>
+                <fullName>CHINA EDU</fullName>
+                <default>false</default>
+                <label>CHINA EDU</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

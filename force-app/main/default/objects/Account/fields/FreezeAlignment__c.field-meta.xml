@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>FreezeAlignment__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>If  set to TRUE  do no longer attempt to Set Territory Name</description>
+    <externalId>false</externalId>
+    <label>FreezeAlignment</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

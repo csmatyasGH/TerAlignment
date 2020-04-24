@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>TerritoryName_Suggested__c</fullName>
+    <description>Suggeste territory name</description>
+    <externalId>false</externalId>
+    <label>TerritoryName Suggested</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>FIND SUGGESTION</fullName>
+                <default>false</default>
+                <label>FIND SUGGESTION</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

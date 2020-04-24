@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>All_Allocated</fullName>
+    <columns>NAME</columns>
+    <columns>Allocator__c</columns>
+    <columns>Field__c</columns>
+    <columns>Item_Value__c</columns>
+    <columns>Active__c</columns>
+    <columns>External_Id__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Allocator__c</field>
+        <operation>notEqual</operation>
+    </filters>
+    <label>All_Allocated</label>
+    <language>en_US</language>
+</ListView>

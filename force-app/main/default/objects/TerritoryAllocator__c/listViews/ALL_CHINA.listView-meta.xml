@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ALL_CHINA</fullName>
+    <columns>NAME</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Geo__c</field>
+        <operation>equals</operation>
+        <value>CHINA</value>
+    </filters>
+    <label>ALL_CHINA</label>
+</ListView>

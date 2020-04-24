@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Validate__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>if  checked  on update we validate the Query then we clear this flag.</description>
+    <externalId>false</externalId>
+    <label>Validate</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

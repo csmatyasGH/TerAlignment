@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SQL_StatusResult__c</fullName>
+    <description>store ther result  of the Validation. Nr  of Belonging accounts or Error msg</description>
+    <externalId>false</externalId>
+    <inlineHelpText>store ther result  of the Validation. Nr  of Belonging accounts or Error msg</inlineHelpText>
+    <label>SQL_StatusResult</label>
+    <length>100</length>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

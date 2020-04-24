@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HUB_BRANCH</fullName>
+    <active>true</active>
+    <description>Allocatort record  with Where clause built from HUB ITEM records. Can have both Hub Items and  Nodes as children</description>
+    <label>HUB</label>
+    <picklistValues>
+        <picklist>Geo__c</picklist>
+        <values>
+            <fullName>APAC</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CHINA</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>EMEA</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>LATAM</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>NORAM</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Operator__c</picklist>
+        <values>
+            <fullName>BETWEEN</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CONTAINS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>END_WITH</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>EQUAL</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>GREATER</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>IN</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>IN_SPLITTEDITEM</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>LESS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>NOTNULL</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>NOT_CONTAINS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>NOT_EQUAL</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>NOT_IN</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>STARTS_WITH</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>SOQL_Status__c</picklist>
+        <values>
+            <fullName>Invalid</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pending</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>Valid</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Segment__c</picklist>
+        <values>
+            <fullName>CORP</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CORP_ENT</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CORP_IS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CORP_MM</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>ENT</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>HIED</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>IS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>K12</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>MM</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RTO</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SMB</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>TerritoryTeam__c</picklist>
+        <values>
+            <fullName>APAC CORP</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>APAC HIED ANZ</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>APAC HIED CHINA</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>APAC HIED SEA</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CHINA EDU</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>EMEA CORP ENT</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>EMEA CORP ENT 1</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>EMEA CORP IS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>EMEA CORP MM</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>EMEA EDU ENT</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>EMEA EDU INSIDE</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>EMEA EDU MM BENONORD</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>EMEA EDU MM EMERG</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>EMEA EDU MM UK</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>EMEA HIED DNB</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>EMEA HIED IBERIA</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>EMEA HIED ROEMEA</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>EMEA HIED UKI</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>HIED ASIA</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>HIED AUSNZ</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>K12 AUSNZ</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>LATAM HIED Brazil</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>LATAM HIED Spanish</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>NORAM CORP ENT</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>NORAM CORP MM 1</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>NORAM CORP MM 2</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>NORAM CORP SMB</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>NORAM CORP SME 1</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>NORAM HIED Central</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>NORAM HIED East</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>NORAM HIED West</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>NORAM K12 Central</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>NORAM K12 East</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>NORAM K12 MasteryConnect</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>NORAM K12 Portfolium</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>NORAM K12 West</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RTO AUSNZ</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Territory_Market__c</picklist>
+        <values>
+            <fullName>CORP</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>EDU</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Type__c</picklist>
+        <values>
+            <fullName>CUSTOM</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CUSTOM_SPLITTED</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CUSTOM_SPLIT_ITEM</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>GEO</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>LOCATION</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SEGMENT</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+</RecordType>

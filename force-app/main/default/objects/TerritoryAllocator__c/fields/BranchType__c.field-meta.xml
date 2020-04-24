@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>BranchType__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(ISBLANK(TEXT(Geo__c)) = FALSE,TEXT(Geo__c),TEXT(ParentAllocator__r.Geo__c)) + &#39;_&#39; +
+IF(ISBLANK(TEXT(Segment__c)) = FALSE,TEXT(Segment__c),TEXT(ParentAllocator__r.Segment__c))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>BranchType</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

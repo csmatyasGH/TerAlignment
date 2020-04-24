@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>AdvancedLogicRule</fullName>
+    <active>true</active>
+    <description>OR
+( 
+CONTAINS(Advanced_logic__c,&quot;  &quot;),
+CONTAINS(Advanced_logic__c,&quot;( &quot;),
+CONTAINS(Advanced_logic__c,&quot; )&quot;)
+)</description>
+    <errorConditionFormula>OR
+(
+CONTAINS(Advanced_logic__c,&quot;  &quot;),
+CONTAINS(Advanced_logic__c,&quot;( &quot;),
+CONTAINS(Advanced_logic__c,&quot; )&quot;)
+)</errorConditionFormula>
+    <errorDisplayField>Advanced_logic__c</errorDisplayField>
+    <errorMessage>Do not use space chareacte after openign bracket or before endign bracket.  Do not user double spaces</errorMessage>
+</ValidationRule>

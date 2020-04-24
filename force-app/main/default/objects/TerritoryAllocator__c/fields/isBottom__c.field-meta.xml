@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>isBottom__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>specify  if this  record corresponds to the bottom territory branch</description>
+    <externalId>false</externalId>
+    <label>isBottom</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

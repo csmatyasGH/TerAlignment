@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Top_Parent_Billing_Location__c</fullName>
+    <description>Outputs the Shipping State of the highest parent Accounts&#39; shipping location, up to 5 account parent lookup hierarchy levels. ES-21128</description>
+    <externalId>false</externalId>
+    <formula>IF
+(
+Parent.Id = NULL
+,IF
+(
+ShippingState &lt;&gt; NULL,
+ShippingState,
+ShippingCountry
+)
+,IF
+(
+Parent.Parent.Id = NULL
+,IF
+(
+Parent.ShippingState &lt;&gt; NULL,
+Parent.ShippingState,
+Parent.ShippingCountry
+)
+,IF
+(
+Parent.Parent.Parent.Id = NULL
+,IF
+(
+Parent.Parent.ShippingState &lt;&gt; NULL,
+Parent.Parent.ShippingState,
+Parent.Parent.ShippingCountry
+)
+,IF
+(
+Parent.Parent.Parent.Parent.Id = NULL
+,IF
+(
+Parent.Parent.Parent.ShippingState &lt;&gt; NULL,
+Parent.Parent.Parent.Parent.ShippingState,
+Parent.Parent.Parent.Parent.ShippingCountry
+)
+,IF
+(
+Parent.Parent.Parent.Parent.Parent.Id = NULL
+,IF
+(
+Parent.Parent.Parent.Parent.ShippingState &lt;&gt; NULL,
+Parent.Parent.Parent.Parent.ShippingState,
+Parent.Parent.Parent.Parent.ShippingCountry
+)
+,IF
+(
+Parent.Parent.Parent.Parent.Parent.ShippingState &lt;&gt; NULL,
+Parent.Parent.Parent.Parent.Parent.ShippingState,
+Parent.Parent.Parent.Parent.Parent.ShippingCountry
+)
+)
+)
+)
+)
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>Outputs the Shipping State of the highest parent Accounts&#39; shipping location, up to 5 account parent lookup hierarchy levels.</inlineHelpText>
+    <label>Top Parent Shipping State</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SetOrderofExecution</fullName>
+    <active>true</active>
+    <errorConditionFormula>OR
+(
+AND(isBottom__c=TRUE, ISNULL(Order_of_Execution__c)),
+AND(isBottom__c=TRUE, TEXT(Geo__c)= &#39;EMEA&#39;, Order_of_Execution__c &gt; 100),
+AND(isBottom__c=TRUE, TEXT(Geo__c) = &#39;APAC&#39;,OR(Order_of_Execution__c &lt; 100,Order_of_Execution__c &gt; 200) ),
+AND(isBottom__c=TRUE, TEXT(Geo__c)= &#39;LATAM&#39;, OR(Order_of_Execution__c &lt; 200,Order_of_Execution__c &gt; 300) ),
+AND(isBottom__c=TRUE, TEXT(Geo__c)= &#39;NORAM&#39;, Order_of_Execution__c &lt; 300)
+)</errorConditionFormula>
+    <errorMessage>Set Order of Execution(EMEA=0-100; APAC=100-200;LATAM=200-300;NORAM &gt; 300</errorMessage>
+</ValidationRule>

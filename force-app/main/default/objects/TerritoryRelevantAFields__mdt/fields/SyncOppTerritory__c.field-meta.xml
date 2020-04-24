@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SyncOppTerritory__c</fullName>
+    <defaultValue>true</defaultValue>
+    <description>is Checked the Account territory is  cascaded down to Opportunities before Need Approval stage</description>
+    <externalId>false</externalId>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <inlineHelpText>is Checked the Account territory is  cascaded down to Opportunities before Need Approval stage and When Account is frozen get Opp Team Members</inlineHelpText>
+    <label>SyncOppTerritory</label>
+    <type>Checkbox</type>
+</CustomField>

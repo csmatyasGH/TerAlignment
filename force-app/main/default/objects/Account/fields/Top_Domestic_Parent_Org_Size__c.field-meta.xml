@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Top_Domestic_Parent_Org_Size__c</fullName>
+    <description>used in some of the Territory Rules</description>
+    <externalId>false</externalId>
+    <formula>IF(Parent.ShippingCountry = ShippingCountry
+,IF(Parent.Parent.ShippingCountry = ShippingCountry
+   ,IF(Parent.Parent.Parent.ShippingCountry = ShippingCountry
+       ,IF(Parent.Parent.Parent.Parent.ShippingCountry = ShippingCountry
+	      ,IF(Parent.Parent.Parent.Parent.Parent.ShippingCountry = ShippingCountry
+		      ,Parent.Parent.Parent.Parent.Parent.System_Org_Size__c 
+			  ,Parent.Parent.Parent.Parent.System_Org_Size__c 
+			  )
+          ,Parent.Parent.Parent.System_Org_Size__c 
+		  ) 
+	   ,Parent.Parent.System_Org_Size__c 
+	   )
+   ,Parent.System_Org_Size__c 
+   )
+,System_Org_Size__c 
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Top Domestic Parent OrgSize</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

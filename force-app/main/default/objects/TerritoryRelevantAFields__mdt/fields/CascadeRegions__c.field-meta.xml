@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CascadeRegions__c</fullName>
+    <defaultValue>true</defaultValue>
+    <description>if checked we  call alignment batch for each region one after another. Default is checked. The unchecked versiois  used when we want to run alignment for 1  GEO</description>
+    <externalId>false</externalId>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <inlineHelpText>if checked we  call alignment batch for each region one after another. Default is checked.</inlineHelpText>
+    <label>CascadeRegions</label>
+    <type>Checkbox</type>
+</CustomField>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Date2StartAlignment__c</fullName>
+    <description>if this field is set  we align only  Accounts  created after this date. Otherwise we align all.</description>
+    <externalId>false</externalId>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <inlineHelpText>if this field is set  we align only  Accounts  created after this date. Otherwise we align all.</inlineHelpText>
+    <label>Date2StartAlignment</label>
+    <required>false</required>
+    <type>Date</type>
+</CustomField>

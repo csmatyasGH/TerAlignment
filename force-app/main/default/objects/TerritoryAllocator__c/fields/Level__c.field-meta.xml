@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Level__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF
+(
+ParentAllocator__c = NULL,1,
+IF
+  (ParentAllocator__r.ParentAllocator__c = NULL,2,
+   IF(ParentAllocator__r.ParentAllocator__r.ParentAllocator__c = NULL,3,
+      IF(ParentAllocator__r.ParentAllocator__r.ParentAllocator__r.ParentAllocator__c = NULL,4,
+        IF(ParentAllocator__r.ParentAllocator__r.ParentAllocator__r.ParentAllocator__r.ParentAllocator__c = NULL,5,
+          IF(ParentAllocator__r.ParentAllocator__r.ParentAllocator__r.ParentAllocator__r.ParentAllocator__r.ParentAllocator__c = NULL,6,
+     7)
+)
+)
+)
+)
+)</formula>
+    <label>Level</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>
