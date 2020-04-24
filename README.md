@@ -32,3 +32,5 @@ Azt is akarom hogy hozzaadok valami  a remote  branch hez  es azt PULL ozom de n
 
 23:52   valoban a local master  es a Local DEV  branch ek mast  kodot tartalmaznak. A master a prod  an Local a  DEV  org kodja.  amint checkout  olok egy branch  et a working folder kodja eszrevetlenul valtozik.  
 
+23:58   NEM lehet push -olni  branch-ek kozott. A local XYZ  branch-bol csak a megfelelo REMOTE XYZ  branch-be tudom push olni a dolgokat.  Szerintem branch  ek kozott csak pull request ill/  merge  parancs-al tudok kodot mozgatni. 
+
