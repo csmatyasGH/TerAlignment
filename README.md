@@ -20,7 +20,7 @@ hozzaadtam a terminal-bol:  git add manifest/package.xml
 ezutan commit-oltam es utana push-oltam a remote ba.  Ekkor jelent meg a Branch es az elso commit a remote-ba
 ezutan a package.xml alapjan retrieveltem a prod  solution es commitoltam majd push oltam
 
-ezutan csialtam egy lokalis  branch et  de nem latom a terminal historiba  a command-ot(szerintem az UI  on csinaltam) Oda retrieve-eltem a DEV org-bol a solution-t. Ezt majd commit-oltam es push-oltam. Ezzel lett egy uj Branch a Remote -on
+ezutan csialtam egy lokalis  branch et  de nem latom a terminal historiba  a command-ot(szerintem az UI  on csinaltam) Oda retrieve-eltem a DEV org-bol a solution-t. Ezt majd commit-oltam es push-oltam. Ezzel lett egy uj Branch a Remote -on.  DE EZT  MINTHA EM LATNA PUBLIKUSNAK A VSC AZERT MERT Terminal bol push oltam:  git push https://csmatyasBBK@bitbucket.org/csmatyasBBK/playgroundrepo.git DEV_BRANCH_LOCAL 
 
 Kb itt tartok most
 
@@ -29,4 +29,6 @@ majd a DEV_BRACH_LOCAL  brnachet- pull requeste vel mergelem a master-be
 
 Azt is akarom hogy hozzaadok valami  a remote  branch hez  es azt PULL ozom de nem szeretnem elbaszni a local-t. Nem akarok belefutni abba hogy  ne tudjak push olni  mert esetleg van valami a remote  ba ahonnan eloszor pull ozni kell es csak utana push.  ROHADJAK MEG KURVA NEHEZEN MEGY A FEJEMBE, MONDOM EN HOGY FOGYATEKOS VAGYOK EBBE A TEMABA 
 
+
+23:52   valoban a local master  es a Local DEV  branch ek mast  kodot tartalmaznak. A master a prod  an Local a  DEV  org kodja.  amint checkout  olok egy branch  et a working folder kodja eszrevetlenul valtozik.  
 
