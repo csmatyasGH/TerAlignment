@@ -10,9 +10,9 @@
     <columns>Built_SOQL__c</columns>
     <columns>Segment__c</columns>
     <columns>Type__c</columns>
-    <columns>UPDATEDBY_USER</columns>
     <columns>Active__c</columns>
     <columns>isBottom__c</columns>
+    <columns>CREATEDBY_USER</columns>
     <columns>Order_of_Execution__c</columns>
     <columns>Territory_Name__c</columns>
     <columns>SQL_StatusResult__c</columns>
@@ -28,5 +28,4 @@
         <value>NORAM</value>
     </filters>
     <label>ALL_BOTTOM_NORAM</label>
-    <language>en_US</language>
 </ListView>

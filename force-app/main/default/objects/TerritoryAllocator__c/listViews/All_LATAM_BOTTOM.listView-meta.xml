@@ -10,7 +10,6 @@
     <columns>Type__c</columns>
     <columns>Territory_Name__c</columns>
     <columns>Active__c</columns>
-    <columns>Order_of_Execution__c</columns>
     <columns>SQL_StatusResult__c</columns>
     <filterScope>Everything</filterScope>
     <filters>

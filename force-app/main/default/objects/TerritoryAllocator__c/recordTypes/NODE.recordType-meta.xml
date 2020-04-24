@@ -11,10 +11,6 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>CHINA</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>EMEA</fullName>
             <default>false</default>
         </values>
@@ -147,35 +143,11 @@
             <fullName>RTO</fullName>
             <default>false</default>
         </values>
-        <values>
-            <fullName>SMB</fullName>
-            <default>false</default>
-        </values>
     </picklistValues>
     <picklistValues>
         <picklist>TerritoryTeam__c</picklist>
         <values>
             <fullName>APAC CORP</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>APAC HIED ANZ</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>APAC HIED CHINA</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>APAC HIED SEA</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>CHINA EDU</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>EMEA CORP ENT</fullName>
             <default>false</default>
         </values>
         <values>
@@ -211,22 +183,6 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>EMEA HIED DNB</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>EMEA HIED IBERIA</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>EMEA HIED ROEMEA</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>EMEA HIED UKI</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>HIED ASIA</fullName>
             <default>false</default>
         </values>
@@ -259,10 +215,6 @@
             <default>false</default>
         </values>
         <values>
-            <fullName>NORAM CORP SMB</fullName>
-            <default>false</default>
-        </values>
-        <values>
             <fullName>NORAM CORP SME 1</fullName>
             <default>false</default>
         </values>
@@ -284,18 +236,6 @@
         </values>
         <values>
             <fullName>NORAM K12 East</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>NORAM K12 MasteryConnect</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>NORAM K12 Portfolium</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>NORAM K12 West</fullName>
             <default>false</default>
         </values>
         <values>

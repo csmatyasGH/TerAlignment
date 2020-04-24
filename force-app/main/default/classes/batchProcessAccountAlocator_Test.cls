@@ -78,14 +78,24 @@ public class batchProcessAccountAlocator_Test {
   }
 
   @isTest
+  /**************************************
+  Need to be adjusted to use Active Terr.
+  ES-36209                    2020.04.22.
+  **************************************/
   static void testcheckAlignmentProcess() {
     //add code here because no Callout to align.
-    Account thea = [SELECT ID, TerritoryName__c FROM Account LIMIT 1];
+    Account thea = [SELECT ID, Name,TerritoryName__c FROM Account LIMIT 1];
+
+    Set<String> goodTNs = getAccountTerrNamePicklist();
     Territory2 t2t = [
       SELECT ID, Name
       FROM Territory2
-      WHERE Name = 'APAC CORP 1'
+      WHERE Territory2Model.State = 'Active' and Name in :goodTNs //ES-36209
+      limit 1 
     ];
+    system.assertNotEquals(NULL,t2t.id,'we expect the Territory2 record'); 
+    thea.TerritoryName__c = t2t.NAme;
+    update thea;  
 
     ObjectTerritory2Association ota = new ObjectTerritory2Association(
       ObjectId = thea.id,
@@ -93,6 +103,7 @@ public class batchProcessAccountAlocator_Test {
       AssociationCause = 'Territory2Manual'
     );
     insert ota;
+    system.assertNotEquals(NULL,ota.id,'we expect the OTA record ');
     batchProcessAccountAlocator ab = new batchProcessAccountAlocator(1);
     batchProcessAccountAlocator.AlocationResult alocres = AccountTerrAlocatorQueueable.checkAlignmentProcess(
       new Set<ID>{ thea.Id }
@@ -176,4 +187,19 @@ public class batchProcessAccountAlocator_Test {
       'Just chekc if parameter AffecterRecord went through'
     );
   }
+
+ 
+  private static Set<String> getAccountTerrNamePicklist()
+  {
+   Set<String> retval = new Set<String>();
+   Schema.DescribeFieldResult dfr = Schema.SObjectType.Account.fields.TerritoryName__c; 
+   List<Schema.PicklistEntry> ple = dfr.getPicklistValues();
+   for( Schema.PicklistEntry pickListVal : ple)
+     {
+    retval.add(pickListVal.getValue());
+     }
+
+   return retval;
+  }
+
 }

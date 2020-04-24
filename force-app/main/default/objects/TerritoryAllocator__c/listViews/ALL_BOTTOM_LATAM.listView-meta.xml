@@ -16,14 +16,15 @@
     <columns>SQL_StatusResult__c</columns>
     <filterScope>Everything</filterScope>
     <filters>
-        <field>Geo__c</field>
-        <operation>equals</operation>
-        <value>LATAM</value>
-    </filters>
-    <filters>
         <field>isBottom__c</field>
         <operation>equals</operation>
         <value>1</value>
     </filters>
+    <filters>
+        <field>Geo__c</field>
+        <operation>equals</operation>
+        <value>LATAM</value>
+    </filters>
     <label>ALL_BOTTOM_LATAM</label>
+    <language>en_US</language>
 </ListView>

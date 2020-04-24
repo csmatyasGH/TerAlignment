@@ -14,7 +14,6 @@
     <columns>Order_of_Execution__c</columns>
     <columns>SQL_StatusResult__c</columns>
     <columns>CREATEDBY_USER</columns>
-    <columns>UPDATEDBY_USER</columns>
     <filterScope>Everything</filterScope>
     <filters>
         <field>isBottom__c</field>
@@ -27,4 +26,5 @@
         <value>APAC</value>
     </filters>
     <label>ALL_BOTTOM_APAC</label>
+    <language>en_US</language>
 </ListView>

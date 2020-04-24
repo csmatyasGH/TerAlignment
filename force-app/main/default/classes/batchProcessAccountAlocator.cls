@@ -58,13 +58,18 @@ used for 1 Account alignment and TestClass
       sA2A.add(theA.id);
     }
 
-    List<partnerSoapSforceCom.SaveResult> sr = AccountTerrAlocatorQueueable.AllignAccountSoap(
-      sA2A
-    );
-    //2019.11.08. replaced with below. AlocationResult alocRes = checkAlignmentProcess(sA2A);
-    AlocationResult alocRes = AccountTerrAlocatorQueueable.checkAlignmentProcess(
-      sA2A
-    );
+    //we might have Exception in the Soap call caused by an Account, but other accounts might 
+    //have been successfully aligned. In this case we shoud still do the checkAlignmentProcess
+    try 
+      {
+      List<partnerSoapSforceCom.SaveResult> sr = AccountTerrAlocatorQueueable.AllignAccountSoap(sA2A);      
+      } 
+    catch (Exception myex) 
+      {
+      System.Debug('Exception occured during alignment call: ' + myex.getMessage()); //ES-36003
+      }
+
+    AlocationResult alocRes = AccountTerrAlocatorQueueable.checkAlignmentProcess(sA2A);
     totalSucess = totalSucess + alocRes.Success;
     totalFailure = totalFailure + alocRes.Failure;
   }

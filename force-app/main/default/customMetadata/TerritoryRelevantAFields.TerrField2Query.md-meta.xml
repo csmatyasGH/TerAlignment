@@ -16,7 +16,7 @@
     </values>
     <values>
         <field>Date2StartAlignment__c</field>
-        <value xsi:type="xsd:date">2020-01-31</value>
+        <value xsi:type="xsd:date">2019-08-31</value>
     </values>
     <values>
         <field>EMEA_TRF_List__c</field>
@@ -28,7 +28,7 @@
     </values>
     <values>
         <field>HUB_ITEM_RT__c</field>
-        <value xsi:type="xsd:string">0122G000001Dbxu</value>
+        <value xsi:type="xsd:string">012S0000000ZyW0</value>
     </values>
     <values>
         <field>LATAM_TRF_List__c</field>
@@ -44,7 +44,7 @@
     </values>
     <values>
         <field>handleMissingTerr__c</field>
-        <value xsi:type="xsd:boolean">false</value>
+        <value xsi:type="xsd:boolean">true</value>
     </values>
     <values>
         <field>isPilot__c</field>

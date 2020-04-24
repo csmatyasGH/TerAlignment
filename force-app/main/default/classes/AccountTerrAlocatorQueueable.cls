@@ -59,7 +59,7 @@ export  PartnerWSDL and reload into the org to make a callout from Salesforce 2 
 
     return retval;
   }
-/********************************************************************************************
+  /********************************************************************************************
 iterate through the Accounts and check if aligned properly. If yes clear Need_Alignment flag
 return:  object holding nr of Success/Failures statistics.
 
@@ -73,17 +73,29 @@ filtered out by the batchProcesAccountTerritory class
     Set<ID> sA2A
   ) {
     batchProcessAccountAlocator.AlocationResult retval = new batchProcessAccountAlocator.AlocationResult();
-    //List<Account> account2U =  new List<Account>();
 
-    List<SObject> accOpp2Update = new List<SObject>();
-    List<SObject> opp2Update = new List<SObject>(); //add opps  first to this list them add it to the above to avoid chunk error.  (Cannot have more than 10 chunks in a single operation)
+    Set<String> forbiddedSates = new Set<String>{
+      'Needs Approval',
+      'Sales Validating',
+      'Re-Qualify',
+      'Qualified',
+      'Evaluating',
+      'Shortlist',
+      'Negotiation',
+      'Payment Requested'
+    }; //(ES-36003)
+
+    List<SObject> accOpp2Update = new List<SObject>();                  //Cannot have more than 10 chunks in a single operation
+    List<SObject> opp2Update = new List<SObject>(); //add opps first to this list them add it to the above to avoid chunk error.  
 
     List<Account> afterAllocationAccs = [
       SELECT
         Id,
+        Name,
         TerritoryName__c,
         TerritoryName_Suggested__c,
         Need_Alignment__c,
+        FreezeAlignment__c,
         (
           SELECT
             id,
@@ -100,27 +112,30 @@ filtered out by the batchProcesAccountTerritory class
           FROM Opportunities
           WHERE
             CloseDate > TODAY
-            AND StageName IN (
+            AND (StageName IN (
               'Attempting',
               'Inbound',
               'Inbound Follow Up',
               'Engaged',
               'Marketing Qualified'
             )
+            OR Territory2Id = null)
         )
       FROM Account
       WHERE id IN :sA2A
     ];
 
-    //List<Opportunity> Opps2PassTerritory =  new List<Opportunity>();
-    for (Account a : afterAllocationAccs) {
+
+    for (Account a : afterAllocationAccs) 
+    {
       String terrName2match = a.TerritoryName__c;
       ID matchedOTAID;
       ID matchedT2ID;
-      for (
-        ObjectTerritory2Association newOTA : a.ObjectTerritory2Associations
-      ) {
-        if (newOTA.Territory2.Name == terrName2match) {
+
+      for (ObjectTerritory2Association newOTA : a.ObjectTerritory2Associations) 
+      {
+        if (newOTA.Territory2.Name == terrName2match) 
+        {
           matchedOTAID = newOTA.id;
           matchedT2ID = newOTA.Territory2Id;
           retval.Success = retval.Success + 1;
@@ -134,7 +149,7 @@ filtered out by the batchProcesAccountTerritory class
       }
 
       a.Need_Alignment__c = false; //we had a succesfull allocation. Clear the flag
-      //account2U.add(a);
+
       accOpp2Update.add(a);
 
       //check Custom MetadataType to see if propagate to Opps
@@ -143,11 +158,36 @@ filtered out by the batchProcesAccountTerritory class
       }
 
       //pass Territory2Id to Opportunities.
-      for (Opportunity opp : a.Opportunities) {
-        if (opp.Territory2Id != matchedT2ID) {
-          opp.Territory2Id = matchedT2ID;
+      for (Opportunity opp : a.Opportunities) 
+      {
+        /************************************
+        Here we can have Open Opportunities. 
+        In the majority of  the cases these 
+        are Early Stage opps which needs to 
+        be kept in synch with their Account 
+
+        (BUT we can have here late Stage Opps
+        without TerritoryID. These can happen
+        mainly in case of the accs which were 
+        already Frozen, but missed Territory
+        before this iteration OR if the acc.
+        get stucked in Need Alignment phase
+        and its opp progressed without being
+        aligned.  ES-36003  )
+        DO NOT LEAVE OPEN OPP WITHOUT TERR!!
+        ************************************/
+        if(opp.Territory2Id != matchedT2ID && forbiddedSates.contains(opp.stageName) == false)  
+        {
+          opp.Territory2Id = matchedT2ID; //here we handle the Eraly stage opp (normal path)
           opp2Update.add(opp);
         }
+
+        if (opp.Territory2Id == NULL && forbiddedSates.contains(opp.stageName) == true)
+        {
+          opp.Territory2Id = matchedT2ID; //here we handle the LateStage orphan opp (36003)
+          opp2Update.add(opp);
+        }        
+
       }
     }
 
@@ -163,10 +203,10 @@ filtered out by the batchProcesAccountTerritory class
   }
 
   /*******************************
-read Custom Metadata Type into a
-property This decide if we synch
-the Account Terr. with the Opps.
-*******************************/
+  read Custom Metadata Type into a
+  property This decide if we synch
+  the Account Terr. with the Opps.
+  *******************************/
   private static Boolean synchOpps {
     get {
       if (synchOpps == null) {

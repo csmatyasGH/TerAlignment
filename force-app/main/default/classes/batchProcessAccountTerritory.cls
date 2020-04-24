@@ -26,8 +26,10 @@ global class batchProcessAccountTerritory implements Database.Batchable<sObject>
   private String endingDate; //read from Custom Metadata Type  
   private String accFielList; //read from Custom Metadata Type
 
+  @testvisible private String query; //put it here to be reachable from test
+
 /**************************************************************************************
-   Constructor called during tests or when want to align 1 account
+Constructor called during tests or when want to align 1 account AND FROM PROD SCHEDULER
 **************************************************************************************/
   public batchProcessAccountTerritory(
     String geo,
@@ -48,8 +50,8 @@ global class batchProcessAccountTerritory implements Database.Batchable<sObject>
   }
 
   /***********************************************
-   constructor called in prod
- **********************************************/
+  
+  **********************************************/
   public batchProcessAccountTerritory(String geo) {
     theGEO = geo;
 
@@ -92,22 +94,25 @@ global class batchProcessAccountTerritory implements Database.Batchable<sObject>
 
   /************************************
    in order to schedule it we need  a
-   parameterless constructor.
-************************************/
-  public batchProcessAccountTerritory() {
+   parameterless constructor. BUT THIS
+   IS NOT THE ONE INVOKED BY SCHEDULER!
+  ************************************/
+  public batchProcessAccountTerritory() 
+  {
     this('APAC');
   }
 
   /*****************************************
-include Schedulable call in the same class
-*****************************************/
-  global void execute(SchedulableContext sc) {
+  include Schedulable call in the same class
+  *****************************************/
+  global void execute(SchedulableContext sc) 
+  {   
     batchProcessAccountTerritory batch = new batchProcessAccountTerritory(
       'APAC',
       null,
-      100
+      null  
     );
-    Database.executebatch(batch, 200);
+    Database.executebatch(batch, 50); //keep low due to Acc./Opp. update
   }
 
   /***************************************************************
@@ -116,15 +121,16 @@ related field changes
 Collect inner opportunities to detect territory Frozen Accounts
 ***************************************************************/
   global Database.QueryLocator start(Database.BatchableContext bc) {
+    Id bcId = bc == NULL?NULL:bc.getJobId();
     theBJM = batchProcessAccountAlocator.CreateBatchMonitor(
-      bc.getJobId(),
+      bcId,
       'batchProcessAccountTerritory',
       0,
       0,
       'FindTErrName: ' + theGEO
     );
 
-    String query = 'Select Id, Name, TerritoryGeo__c,TerritoryTeam__c,TerritoryMarket__c,TerritorySegment__c,TerritoryName__c ,TerritoryName_Suggested__c,temp_AllocatorID__c,FreezeAlignment__c,Need_Alignment__c, ';
+    query = 'Select Id, Name, TerritoryGeo__c,TerritoryTeam__c,TerritoryMarket__c,TerritorySegment__c,TerritoryName__c ,TerritoryName_Suggested__c,temp_AllocatorID__c,FreezeAlignment__c,Need_Alignment__c, ';
     String allTerrRelevantfields = 'ShippingState,Top_Parent_Billing_Location__c,Top_Parent_Billing_Country__c,Sector__c,Org_Type__c,Institution_FTE__c,segment__c,Parent_Account_Segment__c,Top_Parent_Org_Size__c,Org_Size__c,Employee_Count__c,ShippingPostalCode,ShippingPostalCode4Terr__c,Name4Terr__c,Primary_Business__c';
     if (accFielList != null) {
       allTerrRelevantfields = accFielList;
@@ -138,11 +144,18 @@ Collect inner opportunities to detect territory Frozen Accounts
 
     query = query + ' from Account ';
 
-    query =
-      query +
-      ' where TerritoryGeo__c = \'' +
-      theGEO +
-      '\' and FreezeAlignment__c = false ';
+    query = query + ' where TerritoryGeo__c = \'' + theGEO +  '\' ';
+
+    //2020.04.22. add ES-36003  logic to the code. If not alligned yet overrule Freeze
+    if (includeMissing == true) 
+    {
+      query = query + ' and (FreezeAlignment__c = false OR TerritoryName__c = NULL )';
+    }  
+    else 
+    {
+      query = query + ' and FreezeAlignment__c = false ';
+    }
+    //2020.04.22. add ES-36003  logic to the code
 
     if (startingDate != null) {
       query = query + ' and CreatedDate >= ' + startingDate;
@@ -152,9 +165,7 @@ Collect inner opportunities to detect territory Frozen Accounts
       query = query + ' and CreatedDate <= ' + endingDate;
     }    
 
-    if (includeMissing == true) {
-      query = query + ' and TerritoryName__c = NULL ';
-    } //2019.11.19. to fullfil Joanna's request to try fixing missing Territory
+
 
     /****************** testing related WHERE clauses ***********************/
     if (theAccId != null) {
@@ -167,6 +178,7 @@ Collect inner opportunities to detect territory Frozen Accounts
       query = query + ' limit ' + String.valueof(thelimit);
     }
     /****************** testing related WHERE clauses ***********************/
+    System.Debug('CSABA queryu = ' + query);
     return Database.getQueryLocator(query);
   }
 
@@ -186,13 +198,22 @@ Collect inner opportunities to detect territory Frozen Accounts
     for (Account theA : (List<Account>) scope) {
       //exclude Accounts with certain opp and mark account
       List<Opportunity> oppsNeedTeam4A = getOpps4FrozenAccounts(theA);
-      if (oppsNeedTeam4A != null) {
-        oppsNeedTeamMember.addAll(oppsNeedTeam4A);
+      //ES-36003 if the Account is already frozen, or Just to be frozen BUT
+      //TerritoryName__c = NULL and includeMissing = TRUE we NEED Alignment
+      Boolean doNeed = theA.TerritoryName__c == NULL && includeMissing == TRUE?true:false;
+
+      if (oppsNeedTeam4A != null) 
+      {
+        if(oppsNeedTeam4A.size() > 0)
+           {
+            oppsNeedTeamMember.addAll(oppsNeedTeam4A);
+           }
+
         markAccountForbidden(theA);
         totalFrozen++;
-        if (
-          isTest == false //if istest go with FindTerr. why?
-        ) {
+        System.Debug('CSABA totalFrozen = ' + totalFrozen + ' isTest = ' + isTest);
+        if ( isTest == false && doNeed == false)  //ES-36003 
+        {
           acc2Freeze.add(theA);
           continue;
         }
@@ -283,7 +304,8 @@ Closed Debooked Non-Quota
 Closed Lost  
 
 retval: lisf of Opps  with stageName < NeedApproval if there is
-at leas 1  opp with StageName > NeedApproval  
+at leas 1  opp with StageName > NeedApproval 
+OTHERWISE return NULL (this is the regular non-frozen path)
 LOGIC OVERRULED: In case we found Opp Need Approval we need all
 After Go live all Account which need freeze are relativelly new 
 Accounts so all of their Opps need Opportunity Team Members.
@@ -308,7 +330,7 @@ Accounts so all of their Opps need Opportunity Team Members.
       if (forbiddedSates.contains(theO.stageName)) {
         needForbidden = true;
       }
-      //else //WE need OppTeam Memewbr for the  Opp which reached the forbidden state because this is the last chance when we set OppTeamMember from here
+      //else //WE need OppTeam Member for the Opp which reached the forbidden state because this is the last chance when we set OppTeamMember from here
 
       if (theO.Territory2Id != null) {
         retval.add(theO);
@@ -323,28 +345,70 @@ Accounts so all of their Opps need Opportunity Team Members.
   }
 
   /**********************************************
-2019.10.23. No idea why when isTest we do not
-set the Market/Segment/Team values.
-**********************************************/
+  2019.10.23. No idea why when isTest we do not
+  set the Market/Segment/Team values.
+  **********************************************/
   private void markAccountForbidden(Account theA) {
+
+    if(theA.FreezeAlignment__c == true)
+      {//36003 if already frozen don't repeat 
+      return;  
+      } 
+     
     theA.FreezeAlignment__c = true;
     theA.Need_Alignment__c = false; //BINGO
     /****************************************
-	at this point you can transferr here the
-	final Territory Team/Market/Segment. TB2C
-	split the T=xxx/M=yyy/S=zzz
-	*****************************************/
+    at this point you can transferr here the
+      final Territory Team/Market/Segment. TB2C
+    split the T/M/S
+    36003 if contain '=' split again for "=" 
+      *****************************************/
     String theTMS = theA.temp_AllocatorID__c;
     if (theTMS != null && theTMS.contains('/') && isTest == false) {
       string[] theTMSarray = theTMS.split('/');
-      if (theTMSarray.size() == 3) {
-        theA.TerritoryTeam__c = theTMSarray[0];
-        theA.TerritoryMarket__c = theTMSarray[1];
-        if (theA.TerritoryGeo__c != 'EMEA') {
-          theA.TerritorySegment__c = theTMSarray[2];
+      if (theTMSarray.size() == 3) 
+      {
+        //split again to  pick the piece after "="
+        String tmsitem = getTMSpiece(theTMSarray[0]);
+        if(tmsitem != NULL)
+          {
+          theA.TerritoryTeam__c = tmsitem;
+          }
+
+        tmsitem = getTMSpiece(theTMSarray[1]);
+        if(tmsitem != NULL)
+          {
+          theA.TerritoryMarket__c = tmsitem;
+          }        
+
+        if (theA.TerritoryGeo__c != 'EMEA') 
+        {
+          tmsitem = getTMSpiece(theTMSarray[2]);          
+          if(tmsitem != NULL)
+          {
+          theA.TerritorySegment__c = tmsitem;
+          }   
         }
       }
     }
+  }
+
+  /*****************************************
+  pick the value after the sign "=" if exist 
+  36003
+  *****************************************/
+  private string getTMSpiece(String tmsitem)
+  {
+   String retval;
+   if(tmsitem == NULL  || tmsitem.indexof('=') == -1)
+      {
+      return tmsitem;
+      }
+  
+  string[] items = tmsitem.split('=');
+  retval = items[1];   
+
+   return retval;
   }
 
   /***************************************************** 

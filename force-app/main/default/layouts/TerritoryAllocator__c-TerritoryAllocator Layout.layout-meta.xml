@@ -206,8 +206,6 @@
         <fields>Item_Value__c</fields>
         <fields>Active__c</fields>
         <relatedList>TerritoryAllocatorItem__c.Allocator__c</relatedList>
-        <sortField>Item_Value__c</sortField>
-        <sortOrder>Asc</sortOrder>
     </relatedLists>
     <relatedLists>
         <fields>NAME</fields>
@@ -223,7 +221,7 @@
     <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
     <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
     <summaryLayout>
-        <masterLabel>00h2G00000ZrJER</masterLabel>
+        <masterLabel>00hS0000001BJ3g</masterLabel>
         <sizeX>4</sizeX>
         <sizeY>0</sizeY>
         <summaryLayoutStyle>Default</summaryLayoutStyle>

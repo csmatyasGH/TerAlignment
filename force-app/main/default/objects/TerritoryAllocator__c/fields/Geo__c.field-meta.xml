@@ -30,11 +30,6 @@
                 <default>false</default>
                 <label>NORAM</label>
             </value>
-            <value>
-                <fullName>CHINA</fullName>
-                <default>false</default>
-                <label>CHINA</label>
-            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>

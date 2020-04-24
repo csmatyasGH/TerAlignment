@@ -232,13 +232,8 @@ Called in the FLOW to check if the Account was aligned to the territory passed i
           acc2OperateOn.TerritorySegment__c = foundTerrAloc.Segment__c;
         }
       }
-      acc2OperateOn.temp_AllocatorID__c =
-        'T= ' +
-        foundTerrAloc.TerritoryTeam__c +
-        +' /M= ' +
-        foundTerrAloc.Territory_Market__c +
-        ' /S= ' +
-        foundTerrAloc.Segment__c;
+      //36003 fix string formattign error
+      acc2OperateOn.temp_AllocatorID__c = foundTerrAloc.TerritoryTeam__c + '/' + foundTerrAloc.Territory_Market__c + '/' + foundTerrAloc.Segment__c;
 
       try //we might have exception on update due to restrited picklist. Add some exception handling here
       {
@@ -302,15 +297,23 @@ involved in their formula has changed. Called by Acc Trigger
    change from ShippingPostalCode to Top_Parent_Shipping_Code__c
 ***************************************************************/
   public static void setPostalCode4Terr(Account a, Account oldAcc) {
-    //if((a.ShippingPostalCode4Terr__c == NULL && a.ShippingPostalCode != NULL)||  (oldAcc != NULL && a.ShippingPostalCode != oldAcc.ShippingPostalCode) )
     if (
       (a.ShippingPostalCode4Terr__c == null &&
       a.Top_Parent_Shipping_Code__c != null) ||
       (oldAcc != null &&
       a.Top_Parent_Shipping_Code__c != oldAcc.Top_Parent_Shipping_Code__c)
     ) {
-      //a.ShippingPostalCode4Terr__c = a.ShippingPostalCode.left(5);
-      a.ShippingPostalCode4Terr__c = a.Top_Parent_Shipping_Code__c.left(5);
+      //it might be possible that the old PostalCode 
+      //was not NULL, but the new one is. Take care!
+      if(a.Top_Parent_Shipping_Code__c == NULL)
+      {
+        a.ShippingPostalCode4Terr__c = NULL;
+      }
+      else 
+      {
+        a.ShippingPostalCode4Terr__c = a.Top_Parent_Shipping_Code__c.left(5);        
+      }
+
     }
   }
 

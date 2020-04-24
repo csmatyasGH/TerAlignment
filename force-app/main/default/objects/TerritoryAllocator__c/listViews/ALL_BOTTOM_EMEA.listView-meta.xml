@@ -9,12 +9,12 @@
     <columns>Segment__c</columns>
     <columns>Type__c</columns>
     <columns>Active__c</columns>
+    <columns>isBottom__c</columns>
     <columns>Territory_Name__c</columns>
     <columns>Order_of_Execution__c</columns>
+    <columns>Operator__c</columns>
     <columns>SQL_StatusResult__c</columns>
     <columns>CREATEDBY_USER</columns>
-    <columns>Account_field__c</columns>
-    <columns>Comparison_Value__c</columns>
     <filterScope>Everything</filterScope>
     <filters>
         <field>isBottom__c</field>

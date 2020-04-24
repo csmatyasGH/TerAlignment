@@ -59,11 +59,6 @@
                 <default>false</default>
                 <label>CORP_IS</label>
             </value>
-            <value>
-                <fullName>SMB</fullName>
-                <default>false</default>
-                <label>SMB</label>
-            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>

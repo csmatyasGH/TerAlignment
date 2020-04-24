@@ -322,9 +322,11 @@ For each record  all CheckNode/Hub
         account2MAtch.TerritorySegment__c != theTA.Segment__c ||
         account2MAtch.TerritoryName_Suggested__c != theTA.Territory_Name__c
       ) {
-        if (account2MAtch.FreezeAlignment__c == false) {
+        System.Debug('CSABA Account2MAtch TerrName = ' + account2MAtch.TerritoryName__c);
+        if (account2MAtch.FreezeAlignment__c == false || account2MAtch.TerritoryName__c == NULL || account2MAtch.TerritoryName__c == '')  //ES-36003
+          {
           account2MAtch.Need_Alignment__c = true; //this does not necesarilly mean Need Alignment. Its just Need Update
-        }
+          }
 
         if (
           account2MAtch.TerritoryName_Suggested__c != theTA.Territory_Name__c
