@@ -1,0 +1,46 @@
+{
+    "summary": {
+        "outcome": "Passed",
+        "testsRan": 1,
+        "passing": 0,
+        "failing": 0,
+        "skipped": 1,
+        "passRate": "NaN%",
+        "failRate": "NaN%",
+        "testStartTime": "Apr 27, 2020 12:20 PM",
+        "testExecutionTime": "0 ms",
+        "testTotalTime": "0 ms",
+        "commandTime": "24670 ms",
+        "hostname": "https://instructure--training.my.salesforce.com",
+        "orgId": "00D2i0000008aoPEAQ",
+        "username": "csmatyas@instructure.com.training",
+        "testRunId": "7072i00000VkxqK",
+        "userId": "0052G000005S07HQAS"
+    },
+    "tests": [
+        {
+            "attributes": {
+                "type": "ApexTestResult",
+                "url": "/services/data/v48.0/tooling/sobjects/ApexTestResult/07M2i0000028sKAEAY"
+            },
+            "Id": "07M2i0000028sKAEAY",
+            "QueueItemId": "7092i000000Bqk6AAC",
+            "StackTrace": null,
+            "Message": "Method testAccountCountryName does not exist in the the apex class with Id :01pA0000003fSrS",
+            "AsyncApexJobId": "7072i00000VkxqKAAR",
+            "MethodName": "testAccountCountryName",
+            "Outcome": "Skip",
+            "ApexClass": {
+                "attributes": {
+                    "type": "ApexClass",
+                    "url": "/services/data/v48.0/tooling/sobjects/ApexClass/01pA0000003fSrSIAU"
+                },
+                "Id": "01pA0000003fSrSIAU",
+                "Name": "AccountTriggerXHandlerTest",
+                "NamespacePrefix": null
+            },
+            "RunTime": 0,
+            "FullName": "AccountTriggerXHandlerTest.testAccountCountryName"
+        }
+    ]
+}

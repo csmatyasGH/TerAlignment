@@ -1,0 +1,33 @@
+=== Test Reports
+FORMAT  FILE
+──────  ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+txt     c:\Users\csmatyas\WORK\Jira\Playground4GIT_BBK\Playground4GIT\.sfdx\tools\testresults\apex\test-result.txt
+txt     c:\Users\csmatyas\WORK\Jira\Playground4GIT_BBK\Playground4GIT\.sfdx\tools\testresults\apex\test-run-id.txt
+junit   c:\Users\csmatyas\WORK\Jira\Playground4GIT_BBK\Playground4GIT\.sfdx\tools\testresults\apex\test-result-707S000001NFtiw-junit.xml
+json    c:\Users\csmatyas\WORK\Jira\Playground4GIT_BBK\Playground4GIT\.sfdx\tools\testresults\apex\test-result-707S000001NFtiw.json
+
+=== Test Results
+TEST NAME                                          OUTCOME  MESSAGE  RUNTIME (MS)
+─────────────────────────────────────────────────  ───────  ───────  ────────────
+AccountTriggerXHandlerTest.testAccountCountryName  Pass              32967
+
+=== Test Summary
+NAME                 VALUE
+───────────────────  ──────────────────────────────────────────────────
+Outcome              Passed
+Tests Ran            1
+Passing              1
+Failing              0
+Skipped              0
+Pass Rate            100%
+Fail Rate            0%
+Test Start Time      Apr 27, 2020 12:22 PM
+Test Execution Time  32967 ms
+Test Total Time      32967 ms
+Command Time         58405 ms
+Hostname             https://instructure--DevSBCsaba.my.salesforce.com
+Org Id               00DS0000003OU2NMAW
+Username             csmatyas@instructure.com.devsbcsaba
+Test Run Id          707S000001NFtiw
+User Id              0052G000005S07HQAS
+
