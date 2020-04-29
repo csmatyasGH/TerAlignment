@@ -1,6 +1,7 @@
-/**************************************************************************************************************************
-   Class Aloocate  Account by  callign a SOAP API Update call
-**************************************************************************************************************************/
+/**********************************************************************************************************************************************************
+Class Allocate  Account by callign a SOAP API Update call. also contaisn the Allocation Check and theOpp sync method
+2020.04.29. try  to add statistic  info for the Opportunuty sync porcrss and store somehow in the BJM. (as comments) 
+**********************************************************************************************************************************************************/
 global class batchProcessAccountAlocator implements Database.Batchable<sObject>, Database.Stateful, Database.AllowsCallouts, Database.RaisesPlatformEvents {
   Id account2Align;
 
@@ -72,6 +73,10 @@ used for 1 Account alignment and TestClass
     AlocationResult alocRes = AccountTerrAlocatorQueueable.checkAlignmentProcess(sA2A);
     totalSucess = totalSucess + alocRes.Success;
     totalFailure = totalFailure + alocRes.Failure;
+    //2020.04.29. from the below we can see if the succesfully aligned Accounts were updated properly 
+    //when clear the NeedAlignment flag AND we can see if the Opp2be synched were updated succesfully 
+    //the opp. -sync monitor would be usefull to see how many Opps. were synched during the alignment.
+    List<Database.SaveResult> dbSres = alocRes.dsrs;
   }
 
   global void finish(Database.BatchableContext theBC) {
@@ -88,8 +93,8 @@ used for 1 Account alignment and TestClass
   /************************ the below 2 methods are helper methods for batch monitoring useb by both batc classes *******************************/
 
   /***********************************************************************************************************************************************
-In case we have an active Parent BJM for this class create a worker BJM.
-***********************************************************************************************************************************************/
+  In case we have an active Parent BJM for this class create a worker BJM.
+  ***********************************************************************************************************************************************/
   public static Batch_Job_Monitor__c createBatchMonitor(
     Id batchJobID,
     String batchClassName,
@@ -130,8 +135,8 @@ In case we have an active Parent BJM for this class create a worker BJM.
   }
 
   /********************************************************************************************************************
-will bwe called from BatchApexErrorEvents_Trigger
-********************************************************************************************************************/
+  will bwe called from BatchApexErrorEvents_Trigger
+  ********************************************************************************************************************/
   public static Batch_Job_Monitor_Item__c createBatchMonitorItem(
     ID bjmID,
     String themsg,
@@ -150,6 +155,9 @@ will bwe called from BatchApexErrorEvents_Trigger
   public class AlocationResult {
     public integer success;
     public integer failure;
+    //2020.04.29. try  to extedn the class
+    //in order to store DataBase operation
+    public List<Database.SaveResult> dsrs;
 
     public AlocationResult() {
       success = 0;
@@ -159,6 +167,13 @@ will bwe called from BatchApexErrorEvents_Trigger
     public AlocationResult(integer s, integer f) {
       success = s;
       failure = f;
+    }
+
+    /************************* 2020.04.29. ************************/
+    public void setDbSaveResult(List<Database.SaveResult> dsrs2pass)
+    {
+      dsrs = new List<Database.SaveResult>();
+      dsrs.addAll(dsrs2pass);
     }
   }
 }

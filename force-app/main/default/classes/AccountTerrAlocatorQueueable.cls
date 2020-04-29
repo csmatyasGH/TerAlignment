@@ -71,6 +71,7 @@ filtered out by the batchProcesAccountTerritory class
 
 2020.04.29. Rething a bit the returned value. We should return the Database.SaveResult too in
 order to store statistic result in the caller batch. (I would like to track the Opp. sync.)
+add a new member to the AlocationResult  class to store  the SaveResult list
 ********************************************************************************************/
   public static batchProcessAccountAlocator.AlocationResult checkAlignmentProcess(
     Set<ID> sA2A
@@ -209,7 +210,8 @@ order to store statistic result in the caller batch. (I would like to track the 
     {
       //add debug 4 saveresult. put processDBSaveResults in an utility class
       List<Database.SaveResult> drsrs = Database.update(accOpp2Update,false);
-      batchProcessAccountTerritory.processDBSaveResults(drsrs,NULL);
+      List<Database.SaveResult> dsrs = batchProcessAccountTerritory.processDBSaveResults(drsrs,NULL);
+      retval.setDbSaveResult(dsrs);  //2020.04.29. try  to return the info about the DML.
     }
 
     return retval;
