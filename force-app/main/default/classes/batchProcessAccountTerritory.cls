@@ -359,10 +359,10 @@ Accounts so all of their Opps need Opportunity Team Members.
     theA.Need_Alignment__c = false; //BINGO
     /****************************************
     at this point you can transferr here the
-      final Territory Team/Market/Segment. TB2C
+    final Territory Team/Market/Segment. TB2C
     split the T/M/S
-    36003 if contain '=' split again for "=" 
-      *****************************************/
+    (36003) if contain '=' split again for "=" 
+    *****************************************/
     String theTMS = theA.temp_AllocatorID__c;
     if (theTMS != null && theTMS.contains('/') && isTest == false) {
       string[] theTMSarray = theTMS.split('/');
@@ -423,27 +423,35 @@ call Daniel's invocable to get Opportunity TeamMembers
   }
 
   /**************************************************************************************
-iterate through SaveResult and in case of error write to BatchJob_MonitorItem
-**************************************************************************************/
+  iterate through SaveResult and in case of error write to BatchJob_MonitorItem or if the
+  parameter2 is NULL just display a debug msg. THIS method  should  be transferred into a
+  generic class where BatchJobMonitor related code are stored to be used by other classes
+  **************************************************************************************/
   @testvisible
-  private static integer processDBSaveResults(
-    List<Database.SaveResult> drsrs,
-    ID bjmID
-  ) {
+  public static integer processDBSaveResults(List<Database.SaveResult> drsrs, ID bjmID) {
     integer retval = 0;
     List<Batch_Job_Monitor_Item__c> bjmis = new List<Batch_Job_Monitor_Item__c>();
     for (Database.SaveResult sr : drsrs) {
       if (sr.isSuccess()) {
         retval++;
       } else {
-        for (Database.Error err : sr.getErrors()) {
-          Batch_Job_Monitor_Item__c bjmi = new Batch_Job_Monitor_Item__c();
-          bjmi.Parent_Job_Monitor__c = bjmID;
-          bjmi.Affected_record__c = sr.getId();
-
-          bjmi.Error_Phase__c = 'EXECUTE-M';
-          bjmi.Message__c = err.getMessage();
-          bjmis.add(bjmi);
+        for (Database.Error err : sr.getErrors()) 
+        { 
+          String errmsg = err.getMessage();
+          if(bjmID != NULL)
+             {
+              Batch_Job_Monitor_Item__c bjmi = new Batch_Job_Monitor_Item__c();
+              bjmi.Parent_Job_Monitor__c = bjmID;
+              bjmi.Affected_record__c = sr.getId();
+    
+              bjmi.Error_Phase__c = 'EXECUTE-M';
+              bjmi.Message__c = errmsg;
+              bjmis.add(bjmi);
+             }
+          else 
+            {
+            System.Debug('Used durign debug. error: '+ errmsg);
+            }     
         }
       }
     }

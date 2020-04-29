@@ -48,7 +48,7 @@ private static void testAccountCountryName()
 		for( Schema.PicklistEntry pickListVal : ple)
         {
 			if(pickListVal.getValue() == 'US' || pickListVal.getValue() == 'GB') { continue; } //created in testsetup
-			System.Debug('CSABA_X building Acc and country  for '+ pickListVal.getValue());
+
             String theReqion = geos[math.mod(ccounter,4)];              //distribute them randomly among new Accounts
 		    countries.add(new System_Country_Validation_Record__c(Name = pickListVal.getLabel(), Country_Code__c = pickListVal.getValue(), Region__c = theReqion));
             mapcountry2region.put(pickListVal.getLabel(),theReqion);
@@ -64,16 +64,14 @@ private static void testAccountCountryName()
 
 	    Database.insert(countries);	
  		for(System_Country_Validation_Record__c theNewC :countries)
-		   {  
-			System.Debug('CSABA_Y check SCVR: ' + theNewC);   
+		   {    
 			System.assertNotEquals(NULL, theNewC.id,theNewC);
 		   }         
 
 		Database.insert(newAccs);
         Set<ID> accIds = new Set<ID>();
 		for(Account theNewA :newAccs)
-		   {
-			System.Debug('CSABA_W checking new Acc : ' +  theNewA);   
+		   {   
 			System.assertNotEquals(NULL, theNewA.id,theNewA);
 			accIds.add(theNewA.id);
 		   }
@@ -82,17 +80,16 @@ private static void testAccountCountryName()
 		for(Integer i = 0; i < newAccs.size(); i++)  
 		{	
 		System.assertEquals(mapcountry2region.get(newAccs[i].BillingCountry),newAccs[i].Customer_Success_Region__c,newAccs[i]);
-		System.debug('CSABA_BEFORE_SWAP: N/C =' + newAccs[i].BillingCountry + '/' +  newAccs[i].BillingCountryCode);
+
 		newAccs[i].BillingCountry = countries[newAccs.size() - 1 - i].Name; //Just swap the Billing Countries among accounts and update them
 		newAccs[i].BillingCountryCode = mapcountryName2Code.get(newAccs[i].BillingCountry); //to keep Name and Code in sync in BU trigger 
-		System.debug('CSABA_AFTER_SWAP: N/C =' + newAccs[i].BillingCountry + '/' +  newAccs[i].BillingCountryCode);
+
 		} 
 
 		update newAccs; //test update too
         newAccs = [Select id, Name,Billing_Country__c,BillingCountry,BillingCountryCode,Customer_Success_Region__c,TerritoryGeo__c from Account where id in :accIds];
 		for(Integer i = 0; i < newAccs.size(); i++)  
-		{	
-		System.debug('CSABA_AFTER_SWAP_UPDATE: N/C =' + newAccs[i].BillingCountry + '/' +  newAccs[i].BillingCountryCode);			
+		{			
 		System.assertEquals(mapcountry2region.get(newAccs[i].BillingCountry),newAccs[i].Customer_Success_Region__c,newAccs[i]);
         newAccs[i].BillingCountry = NULL;  //clear the Country and expect Cleared CSR
         newAccs[i].BillingCountryCode = NULL;		
@@ -101,8 +98,7 @@ private static void testAccountCountryName()
 		update newAccs; //test update too
         newAccs = [Select id, Name,Billing_Country__c,BillingCountry,BillingCountryCode,Customer_Success_Region__c,TerritoryGeo__c from Account where id in :accIds];
 		for(Integer i = 0; i < newAccs.size(); i++)  
-		{	
-		System.debug('CSABA_AFTER_SWAP_UPDATE_CLEAR: N/C =' + newAccs[i].BillingCountry + '/' +  newAccs[i].BillingCountryCode);				
+		{					
 		System.assertEquals(NULL,newAccs[i].BillingCountryCode,newAccs[i]);			
 		System.assertEquals(NULL,newAccs[i].Customer_Success_Region__c,newAccs[i]);
         newAccs[i].BillingCountry = countries[i].Name;
@@ -114,8 +110,7 @@ private static void testAccountCountryName()
 		update newAccs;
         newAccs = [Select id, Name,Billing_Country__c,BillingCountry,BillingCountryCode,Customer_Success_Region__c,TerritoryGeo__c from Account where id = :newAccs[0].id];
 		for(Integer i = 0; i < newAccs.size(); i++)  
-		{	
-		System.debug('CSABA_AFTER_DELETE_C: N/C =' + newAccs[i].BillingCountry + '/' +  newAccs[i].BillingCountryCode);				
+		{				
 		System.assertEquals(NULL,newAccs[i].Customer_Success_Region__c,newAccs[i]);
 		}		
 

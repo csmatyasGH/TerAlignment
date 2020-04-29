@@ -60,21 +60,36 @@ return value = the found TerrAllocator record or NULL.
         retval = go4Allocator(theAcc2M, 'FLOW', false);
       }
       when 'AlignAcc' {
-        /**********************************************************
+      /**********************************************************
 			Called from FLOW when aligning account in Lightning Quick
 			button based on the Territory foudn in the previous step.
 			**********************************************************/
-
         AccountTerrAlocatorQueueable.AllignAccountSoap(AccID2Proc);
 
         List<TerritoryAllocator__c> inMemmoryAllocs = new List<TerritoryAllocator__c>();
-        inMemmoryAllocs.add(ValidateAlignment(AccID2Proc, terr2M)); //used by caller FLOW
+        //2020.04.25. Try to use AccountTerrAlocatorQueueable.checkAlignmentProcess(....) 
+        //inMemmoryAllocs.add(ValidateAlignment(AccID2Proc, terr2M)); //used by caller FLOW
+        
+        batchProcessAccountAlocator.AlocationResult ares = AccountTerrAlocatorQueueable.checkAlignmentProcess(AccID2Proc); 
+        TerritoryAllocator__c theTA;
+        if(ares.success == 1)
+        {
+          theTA = new TerritoryAllocator__c(Name = 'Matched');
+          theTA.Territory_Name__c = 'OK';
+        }
+        else 
+        {
+          theTA = new TerritoryAllocator__c(Name = 'MISSED');
+          theTA.Territory_Name__c = 'MISSED';          
+        }
+        inMemmoryAllocs.add(theTA);
+        //2020.04.25. Try to use AccountTerrAlocatorQueueable.checkAlignmentProcess(....) 
 
         retval = inMemmoryAllocs;
-      }
+      }   
       when 'ready2Align' {
-        /***************************************************************
-            CALLED FROM PB when the Account just became 100% Alignment Ready
+      /***************************************************************
+      CALLED FROM PB when the Account just became 100% Alignment Ready
 			WE SHOULD FIND A WAY TO NOT CALL FROM BATCH WHEN ACCOUNT IS JUST
 			ALIGNED!!!
 			***************************************************************/
@@ -84,7 +99,10 @@ return value = the found TerrAllocator record or NULL.
           a2process.id = a.id;
           retval = go4Allocator(a2process, 'FLOW', false);
           if (retval != null && retval[0].Name != 'Exception')
+            {
             acc2Align.add(a2process.id); //alloc found
+            }
+
         }
         queueID = System.enqueueJob(
           new AccountTerrAlocatorQueueable(acc2Align)
@@ -95,85 +113,15 @@ return value = the found TerrAllocator record or NULL.
   }
 
   /****************************************************************************************
-Called in the FLOW to check if the Account was aligned to the territory passed in param2.
-****************************************************************************************/
-  public static TerritoryAllocator__c validateAlignment(
-    Set<ID> accID2Proc,
-    String terr2M
-  ) {
-    TerritoryAllocator__c retval;
-    List<Opportunity> opp2Align = new List<Opportunity>(); //2019.10.11.
-    //validate the Alignment by reading the ObjectTerritory2Association and compare Aligned TERR with the Terr2M
-    List<Account> afterAllocationAccs = [
-      SELECT
-        Id,
-        TerritoryName__c,
-        TerritoryName_Suggested__c,
-        Need_Alignment__c,
-        FreezeAlignment__c,
-        (
-          SELECT id, AssociationCause, ObjectId, Territory2Id, Territory2.Name
-          FROM ObjectTerritory2Associations
-          WHERE IsDeleted = false
-        ),
-        (
-          SELECT Id, Createddate, StageName, Territory2Id
-          FROM Opportunities
-          WHERE
-            CloseDate > TODAY
-            AND StageName IN (
-              'Attempting',
-              'Inbound',
-              'Inbound Follow Up',
-              'Engaged',
-              'Marketing Qualified'
-            )
-        ) 
-      FROM Account
-      WHERE id IN :accID2Proc
-    ];
+  Called in the FLOW to check if the Account was aligned to the territory passed in param2.
+  //2020.04.25. WHY NOT USE the AccountTerrAlocatorQueueable.checkAlignmentProcess(....) ?
+  public static TerritoryAllocator__c validateAlignment(....)   REPLACED S SUGGESTED ABOVE.
+  ****************************************************************************************/ 
 
-    for (Account theA : afterAllocationAccs) {
-      ID matchedTerr2ID; //2019.10.11.
-      List<ObjectTerritory2Association> theOTAs = theA.ObjectTerritory2Associations;
-      for (ObjectTerritory2Association ota : theOTAs) {
-        if (ota.Territory2.Name == terr2M) {
-          retval = new TerritoryAllocator__c(Name = 'matched');
-          retval.Territory_Name__c = terr2M;
-          matchedTerr2ID = ota.Territory2ID;
-          break;
-        }
-      } //end for ObjectTerritory2Association
-
-      if (
-        matchedTerr2ID != null //2019.10.11.
-      ) {
-        for (Opportunity opp : theA.Opportunities) {
-          if (opp.territory2ID == matchedTerr2ID) {
-            continue;
-          }
-          opp.territory2ID = matchedTerr2ID;
-          Opp2Align.add(opp);
-        }
-      }
-    } //end for afterAllocationAccs
-
-    if (retval == null) {
-      //we must return a record to not have problem in the FLOW
-      retval = new TerritoryAllocator__c(Name = 'No matched');
-      retval.Territory_Name__c = 'Missed';
-    }
-
-    if (Opp2Align.size() > 0) {
-      Database.update(Opp2Align);
-    }
-    return retval;
-  }
-
-  /*****************************************************
+  /*******************************************************
    Called from FLOW to gather custom settings-based fields
    Make it private and test visible
-*****************************************************/
+  *******************************************************/
   public static Account getAccount2M(Set<ID> accID2Proc) {
     Account theAcc2M = [
       SELECT Id, TerritoryGeo__c
@@ -200,7 +148,7 @@ Called in the FLOW to check if the Account was aligned to the territory passed i
     return theAcc2M;
   }
   /******************************************************************************************************
-   called from Account PB  for  "BuildTerrNAme and from Flow  for "FindTerrName.
+   called from Account PB  for  "BuildTerrName and from Flow  for "FindTerrName.
 ******************************************************************************************************/
   public static List<TerritoryAllocator__c> go4Allocator(
     Account theAcc2M,
@@ -223,11 +171,11 @@ Called in the FLOW to check if the Account was aligned to the territory passed i
 
       acc2OperateOn.TerritoryName_Suggested__c = foundTerrAloc.Territory_Name__c;
       if (istest == false) {
-        //probably useless since is done inside FindTerritoryName4Account.  2019.10.23.
+        //probably useless since is done inside FindTerritoryName4Account too
         acc2OperateOn.TerritoryName__c = foundTerrAloc.Territory_Name__c;
         acc2OperateOn.TerritoryTeam__c = foundTerrAloc.TerritoryTeam__c;
         acc2OperateOn.TerritoryMarket__c = foundTerrAloc.Territory_Market__c;
-        //acc2OperateOn.TerritorySegment__c = foundTerrAloc.Segment__c;
+
         if (acc2OperateOn.TerritoryGeo__c != 'EMEA') {
           acc2OperateOn.TerritorySegment__c = foundTerrAloc.Segment__c;
         }
@@ -497,33 +445,9 @@ Read the Geo dependent mandatory field list.
     set;
   }
 
-  /***********************************************************************************************************************************************
-In case we have an active Parent BJM for this class create a worker BJM.
-
-public static Batch_Job_Monitor__c createBatchMonitor(Id batchJobID, String batchClassName, Integer success, Integer failure, String theComment)
-{
-	List<Batch_Job_Monitor__c> parentBJMs = [Select Id, Log_Level__c from Batch_Job_Monitor__c 
-	                                         where BatchClassName__c = :BatchClassName and Parent_BatchMonitor__c = NULL and Active__c = true 
-											 limit 1
-											 ];
-
-	if(parentBJMs.size() == 0)  { return NULL; }
-
-	Batch_Job_Monitor__c thenewBJM =  new Batch_Job_Monitor__c(Parent_BatchMonitor__c = parentBJMs[0].id, BatchClassName__c = batchClassName);
-	thenewBJM.comment__c = theComment;
-	thenewBJM.BatchJobID__c = batchJobID;
-	thenewBJM.nrofSuccess__c = success;
-	thenewBJM.NrofFailures__c = failure;
-	//insert thenewBJM;
-	Database.upsertresult durs = Database.upsert(thenewBJM,Batch_Job_Monitor__c.BatchJobID__c,false);
-	thenewBJM.comment__c = parentBJMs[0].Log_Level__c;     //just to pass the loglevel back to caller
-	return thenewBJM;
-}
-***********************************************************************************************************************************************/
-
   /******************************
    wrapper class for Invokable.
-******************************/
+  ******************************/
   public class TerrBuilderWrapper {
     @InvocableVariable(label='Account ID')
     public ID accID2Align;

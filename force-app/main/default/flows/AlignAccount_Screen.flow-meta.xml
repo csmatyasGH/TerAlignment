@@ -4,7 +4,7 @@
         <name>AlignAccount</name>
         <label>AlignAccount</label>
         <locationX>1029</locationX>
-        <locationY>43</locationY>
+        <locationY>42</locationY>
         <actionName>AccountTerritoryNameBuilder</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -91,12 +91,19 @@
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Alignment_Success</name>
-            <conditionLogic>and</conditionLogic>
+            <conditionLogic>or</conditionLogic>
             <conditions>
                 <leftValueReference>AlignedTerr.Territory_Name__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <elementReference>FoundTerrAloc.Territory_Name__c</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>AlignedTerr.Territory_Name__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>OK</stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -291,7 +298,7 @@
             <label>TRY_ALIGNMENT</label>
         </rules>
     </decisions>
-    <description>Fins Suggested Territory  Name and align depending on user input (with Exception)</description>
+    <description>Fins Suggested Territory  Name and align depending on user input (with Exception)  (with OppSync v.2.1)</description>
     <interviewLabel>AlignAccount_Screen {!$Flow.CurrentDateTime}</interviewLabel>
     <label>AlignAccount_Screen</label>
     <processMetadataValues>
@@ -487,7 +494,13 @@
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
     </screens>
-    <startElementReference>GetCurrentAlignment</startElementReference>
+    <start>
+        <locationX>50</locationX>
+        <locationY>50</locationY>
+        <connector>
+            <targetReference>GetCurrentAlignment</targetReference>
+        </connector>
+    </start>
     <status>Active</status>
     <variables>
         <description>store the GEO of the Account. Palnned to pass it to Flow  form current record (somehow)</description>

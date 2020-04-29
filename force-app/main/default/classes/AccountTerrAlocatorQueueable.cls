@@ -1,5 +1,5 @@
 /***************************************************************************************************
-class is not really used a squeueable.  We  started in this way  but  at the end we are using one of
+class is not really used as queueable.  We  started in this way  but  at the end we are using one of
 its method (AllignAccountSoap) from a batch class
 ***************************************************************************************************/
 public with sharing class AccountTerrAlocatorQueueable implements Queueable, Database.AllowsCallouts {
@@ -10,9 +10,9 @@ public with sharing class AccountTerrAlocatorQueueable implements Queueable, Dat
   }
 
   /********************************************
-it might be used only when we align Accounts
-in real time when became 100% alignmentReady
-********************************************/
+  it might be used only when we align Accounts
+  in real time when became 100% alignmentReady
+  ********************************************/
   public void execute(QueueableContext context) {
     AllignAccountSoap(accountIDs2Align);
     checkAlignmentProcess(accountIDs2Align);
@@ -68,12 +68,15 @@ we should not use Opp sync when run Alignment for historical data (EMEA or non-a
 we should sync only for new Accounts BUT in this case  we should not  care about Opp Stage
 Accounts with Opps after Need-Approval stage should not even reach the alignment because were
 filtered out by the batchProcesAccountTerritory class
+
+2020.04.29. Rething a bit the returned value. We should return the Database.SaveResult too in
+order to store statistic result in the caller batch. (I would like to track the Opp. sync.)
 ********************************************************************************************/
   public static batchProcessAccountAlocator.AlocationResult checkAlignmentProcess(
     Set<ID> sA2A
   ) {
     batchProcessAccountAlocator.AlocationResult retval = new batchProcessAccountAlocator.AlocationResult();
-
+    //REMARK: in the future this list of Late Stage opp might change. Make this configurable from outside. 
     Set<String> forbiddedSates = new Set<String>{
       'Needs Approval',
       'Sales Validating',
@@ -105,27 +108,31 @@ filtered out by the batchProcesAccountTerritory class
             Territory2.Name,
             LastModifieddate
           FROM ObjectTerritory2Associations
-          WHERE IsDeleted = false
-        ),
+          WHERE IsDeleted = false and Territory2.Territory2Model.State = 'Active' //36003. we can insert only  ACTIVE  Terr into OTA but old Territories are not deleted when INACTIVATED
+         ),
         (
-          SELECT Id, Createddate, StageName, Territory2Id
+          SELECT Id, Createddate, StageName, Territory2Id    
           FROM Opportunities
           WHERE
             CloseDate > TODAY
-            AND (StageName IN (
+            AND (StageName IN (           //include here all EARLY FUNNEL opportunities which need to be kept in sync
               'Attempting',
               'Inbound',
               'Inbound Follow Up',
               'Engaged',
               'Marketing Qualified'
             )
-            OR Territory2Id = null)
+            OR Territory2Id = null)      //include here Open opps without Territory regardless to Funnel position
         )
       FROM Account
       WHERE id IN :sA2A
     ];
 
-
+    /*************************************
+    check if the Account aligned Territory
+    match with the one in Territory_Name.
+    If MATCH try to synchronize Opps too.
+     ************************************/
     for (Account a : afterAllocationAccs) 
     {
       String terrName2match = a.TerritoryName__c;
@@ -143,20 +150,22 @@ filtered out by the batchProcesAccountTerritory class
         }
       }
 
-      if (matchedOTAID == null) {
+      if (matchedOTAID == null) 
+      {
         retval.Failure = retval.Failure + 1;
-        continue; //this mean allocation Attempt was a failed (TBC)
+        continue; 
       }
-
-      a.Need_Alignment__c = false; //we had a succesfull allocation. Clear the flag
+      System.Debug('CSABA we have a MATCHING TERRITORY');
+      a.Need_Alignment__c = false; 
 
       accOpp2Update.add(a);
 
-      //check Custom MetadataType to see if propagate to Opps
+      
       if (synchOpps == false) {
-        continue;
+        continue;   //check Custom MetadataType to see if propagate to Opps
       }
-
+      
+      System.Debug('we have Opps to sync: ' + a.Opportunities.size());
       //pass Territory2Id to Opportunities.
       for (Opportunity opp : a.Opportunities) 
       {
@@ -178,12 +187,14 @@ filtered out by the batchProcesAccountTerritory class
         ************************************/
         if(opp.Territory2Id != matchedT2ID && forbiddedSates.contains(opp.stageName) == false)  
         {
+          System.Debug('Early funnel opp need to be Matched. id= ' +  + opp.id);
           opp.Territory2Id = matchedT2ID; //here we handle the Eraly stage opp (normal path)
           opp2Update.add(opp);
         }
 
         if (opp.Territory2Id == NULL && forbiddedSates.contains(opp.stageName) == true)
         {
+          System.Debug('Orphan Late funnel opp need to be Matched. id = ' + opp.id);          
           opp.Territory2Id = matchedT2ID; //here we handle the LateStage orphan opp (36003)
           opp2Update.add(opp);
         }        
@@ -191,12 +202,14 @@ filtered out by the batchProcesAccountTerritory class
       }
     }
 
-    if (opp2Update.size() > 0) {
-      accOpp2Update.addAll(opp2Update);
-    }
+    //Ad the opps 2 update the a Generic list to havw 1 single update   
+    if (opp2Update.size() > 0)  { accOpp2Update.addAll(opp2Update); }
 
-    if (accOpp2Update.size() > 0) {
-      Database.update(accOpp2Update);
+    if (accOpp2Update.size() > 0) 
+    {
+      //add debug 4 saveresult. put processDBSaveResults in an utility class
+      List<Database.SaveResult> drsrs = Database.update(accOpp2Update,false);
+      batchProcessAccountTerritory.processDBSaveResults(drsrs,NULL);
     }
 
     return retval;

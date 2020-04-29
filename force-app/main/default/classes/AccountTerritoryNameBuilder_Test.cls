@@ -138,8 +138,38 @@ AccountTerritoryNameBuilder(List<TerrBuilderWrapper> params)
     System.assertEquals(null, theTAs, 'No matching Allocator expected');
   }
 
-  @istest
-  static void testValidateAlignment() {
+  @isTest
+  static void testInvokeAccount_AlignAcc()
+  {
+    List<AccountTerritoryNameBuilder.TerrBuilderWrapper> params = new List<AccountTerritoryNameBuilder.TerrBuilderWrapper>();
+    AccountTerritoryNameBuilder.TerrBuilderWrapper param = WrapperBuilderHelper('AlignAcc'); 
+    params.add(param);
+    test.startTest();    
+    Test.setMock(WebServiceMock.class, new AccountAllocatorCalloutMock());
+    List<TerritoryAllocator__c> theTAs = AccountTerritoryNameBuilder.AccountTerritoryNameBuilder(params);
+    Test.stopTest();
+    System.assertNotEquals(null, theTAs, 'we get a fake Allocator for FLOW');
+  }
+
+  @isTest
+  static void testInvokeAccount_Ready2Align()
+  {
+    List<AccountTerritoryNameBuilder.TerrBuilderWrapper> params = new List<AccountTerritoryNameBuilder.TerrBuilderWrapper>();
+    AccountTerritoryNameBuilder.TerrBuilderWrapper param = WrapperBuilderHelper('ready2Align'); 
+    params.add(param);
+    test.startTest();    
+    Test.setMock(WebServiceMock.class, new AccountAllocatorCalloutMock());
+    List<TerritoryAllocator__c> theTAs = AccountTerritoryNameBuilder.AccountTerritoryNameBuilder(params);
+    Test.stopTest();    
+    System.assertEquals(null, theTAs, 'No matching Allocator expected');    
+  }
+
+  /***************************************************************************************************
+  helper method to be invoked by above 2 test methods
+  ***************************************************************************************************/
+  private static AccountTerritoryNameBuilder.TerrBuilderWrapper WrapperBuilderHelper(String Operation)
+  {
+    AccountTerritoryNameBuilder.TerrBuilderWrapper param = new AccountTerritoryNameBuilder.TerrBuilderWrapper();
     Account theA2M = new Account(Name = 'TestAcc');
     theA2M.TerritoryGeo__c = 'NORAM';
     theA2M.ShippingCountry = 'United States';
@@ -147,21 +177,17 @@ AccountTerritoryNameBuilder(List<TerrBuilderWrapper> params)
     theA2M.Primary_Business__c = 'K12';
     theA2M.ShippingPostalCode = '123456';
     theA2M = (Account) TestFactory.createSObject(theA2M, true);
-    TerritoryAllocator__c theTAs = AccountTerritoryNameBuilder.ValidateAlignment(
-      new Set<ID>{ theA2M.id },
-      'NONAME4TEST'
-    );
-    System.assertEquals(
-      'Missed',
-      theTAs.Territory_Name__c,
-      'No matching TerritoryNAme expected'
-    );
+    param.Accs2Process = theA2M;
+    param.AccID2Align = theA2M.id;
+    param.Operation = Operation;
+
+    return param;
   }
 
   /***************************************
-Create 1 Account try to edit some of its
-field
- **************************************/
+  Create 1 Account try to edit some of its
+  field
+  **************************************/
   @isTest
   static void testEnrichAccount1() {
     Test.setMock(WebServiceMock.class, new AccountAllocatorCalloutMock()); //in case automatic alignment is triggered
