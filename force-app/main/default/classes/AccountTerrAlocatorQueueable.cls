@@ -115,7 +115,7 @@ add a new member to the AlocationResult  class to store  the SaveResult list
           SELECT Id, Createddate, StageName, Territory2Id    
           FROM Opportunities
           WHERE
-            CloseDate > TODAY
+            CloseDate > TODAY              // isclosed = false
             AND (StageName IN (           //include here all EARLY FUNNEL opportunities which need to be kept in sync
               'Attempting',
               'Inbound',
@@ -191,6 +191,8 @@ add a new member to the AlocationResult  class to store  the SaveResult list
           System.Debug('Early funnel opp need to be Matched. id= ' +  + opp.id);
           opp.Territory2Id = matchedT2ID; //here we handle the Eraly stage opp (normal path)
           opp2Update.add(opp);
+
+          retval.EarlyFunnel_opps2_sync = retval.EarlyFunnel_opps2_sync + 1;  //2020.04.30.
         }
 
         if (opp.Territory2Id == NULL && forbiddedSates.contains(opp.stageName) == true)
@@ -198,6 +200,8 @@ add a new member to the AlocationResult  class to store  the SaveResult list
           System.Debug('Orphan Late funnel opp need to be Matched. id = ' + opp.id);          
           opp.Territory2Id = matchedT2ID; //here we handle the LateStage orphan opp (36003)
           opp2Update.add(opp);
+
+          retval.LateFunnel_opps2_sync = retval.LateFunnel_opps2_sync + 1; //2020.04.30.
         }        
 
       }
@@ -210,8 +214,8 @@ add a new member to the AlocationResult  class to store  the SaveResult list
     {
       //add debug 4 saveresult. put processDBSaveResults in an utility class
       List<Database.SaveResult> drsrs = Database.update(accOpp2Update,false);
-      List<Database.SaveResult> dsrs = batchProcessAccountTerritory.processDBSaveResults(drsrs,NULL);
-      retval.setDbSaveResult(dsrs);  //2020.04.29. try  to return the info about the DML.
+      //integer retval = batchProcessAccountTerritory.processDBSaveResults(drsrs,NULL);
+      retval.setDbSaveResult(drsrs);  //2020.04.29. try  to return the info about the DML.
     }
 
     return retval;

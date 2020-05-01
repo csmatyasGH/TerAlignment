@@ -4,6 +4,7 @@
 **************************************************************************************************/
 global class batchProcessAccountTerritory implements Database.Batchable<sObject>, Database.Stateful, schedulable, Database.RaisesPlatformEvents {
   global String theGEO;
+  global String allGEOs = 'APAC;LATAM,EMEA;NORAM;CHINA';  
 
   global ID theAccId; //used when testing with 1 account
   global integer thelimit; //used when testing
@@ -55,6 +56,7 @@ Constructor called during tests or when want to align 1 account AND FROM PROD SC
   public batchProcessAccountTerritory(String geo) {
     theGEO = geo;
 
+    /*******************************************
     TerritoryRelevantAFields__mdt trfCMT = [
       SELECT
         FieldList__c,
@@ -66,7 +68,12 @@ Constructor called during tests or when want to align 1 account AND FROM PROD SC
         handleMissingTerr__c
       FROM TerritoryRelevantAFields__mdt
     ];
-    if (trfCMT == null) {
+    *******************************************/
+
+    TerritoryRelevantAFields__mdt trfCMT = getTRFCMT(geo);
+
+    if (trfCMT == null) 
+    {
       return;
     }
 
@@ -75,6 +82,9 @@ Constructor called during tests or when want to align 1 account AND FROM PROD SC
     isCascaded = trfCMT.CascadeRegions__c;
     synchOpps = trfCMT.SyncOppTerritory__c;
     includeMissing = trfCMT.handleMissingTerr__c;
+
+    allGEOs = trfCMT.List_of_GEO__c != NULL?trfCMT.List_of_GEO__c:allGEOs;
+
     if (trfCMT.Date2StartAlignment__c != null) {
       startingDate =
         String.valueOf(trfCMT.Date2StartAlignment__c).left(10) +
@@ -99,7 +109,7 @@ Constructor called during tests or when want to align 1 account AND FROM PROD SC
   ************************************/
   public batchProcessAccountTerritory() 
   {
-    this('APAC');
+    this('APAC'); 
   }
 
   /*****************************************
@@ -193,7 +203,7 @@ Collect inner opportunities to detect territory Frozen Accounts
     List<Opportunity> oppsNeedTeamMember = new List<Opportunity>();
 
     Set<ID> theRealRemainingIDs = new Set<ID>();
-    map<ID, Account> mapAId2Account = new Map<ID, Account>();
+    map<ID, Account> mapAId2Account = new Map<ID, Account>(); 
 
     for (Account theA : (List<Account>) scope) {
       //exclude Accounts with certain opp and mark account
@@ -496,7 +506,21 @@ Store statictics and call next Batch if exists.
     }
 
     batchProcessAccountTerritory batchu; //call the batch for the next GEO
-    if (this.theGEO == 'APAC') {
+    String nextGEO = this.getNextGeo(this.theGEO, this.allGEOs);
+    if(nextGEO != NULL)
+       {
+        batchu = new batchProcessAccountTerritory(nextGEO, theAccId, thelimit);
+        Id batchJobId = Database.executeBatch(batchu, 50);
+       }
+    else 
+       {
+        Integer norofacc;
+        batchProcessAccountAlocator batchuAlloc = new batchProcessAccountAlocator(norofacc);
+        ID baID = Database.executeBatch(batchuAlloc, 10);      
+       }   
+
+    /***************************************************************************
+     if (this.theGEO == 'APAC') {
       batchu = new batchProcessAccountTerritory('LATAM', theAccId, thelimit);
     } else if (theGeo == 'LATAM') {
       batchu = new batchProcessAccountTerritory('EMEA', theAccId, thelimit);
@@ -512,6 +536,57 @@ Store statictics and call next Batch if exists.
 
     if (batchu != null) {
       Id batchJobId = Database.executeBatch(batchu, 50);
-    }
+    } 
+    ***************************************************************************/
+
   }
+
+  /******************************** Make GEO configurable **********************************/
+  
+  /******************************************************************
+  Get the TerritoryRelevantField CMT and its child CMT item(not used) 
+  ******************************************************************/
+  private TerritoryRelevantAFields__mdt getTRFCMT(String currentGEO)
+  {
+    TerritoryRelevantAFields__mdt trfCMT = [
+      SELECT
+        FieldList__c,
+        Date2StartAlignment__c,
+        Date2EndAlignment__c,
+        isPilot__c,
+        CascadeRegions__c,
+        SyncOppTerritory__c,
+        handleMissingTerr__c
+        ,List_of_GEO__c
+        ,(Select id,DeveloperName,GeoRelevantFields__c 
+          from TerritoryGeoItems__r
+          where DeveloperName = :currentGEO
+         )
+      FROM TerritoryRelevantAFields__mdt
+    ]; 
+    
+    return trfCMT;
+  }
+
+
+  private String getNextGeo(String currentGeo,String allGeos)
+  {
+  String[] geos = allGeos.split(';');
+  integer geoCount = geos.size();
+  if(currentGeo == geos[geoCount-1])
+    {
+    return NULL; //no more GEO. Game Over  
+    }
+
+  for(integer i = 0; i < geoCount; i++)
+     {
+     if(currentGeo == geos[i])
+       {
+       return geos[i+1];  
+       } 
+     }
+
+  return null;     
+  }
+
 }

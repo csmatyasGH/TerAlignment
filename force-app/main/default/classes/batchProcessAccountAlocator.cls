@@ -8,6 +8,9 @@ global class batchProcessAccountAlocator implements Database.Batchable<sObject>,
   global integer totalSucess = 0;
   global integer totalFailure = 0;
 
+  global integer totalEFOSync = 0;  //2020.04.30.
+  global integer totalLFOSybc = 0;  //2020.04.30. 
+
   public integer nrofAccount;
 
   /************** used only during tests  ***********/
@@ -76,17 +79,25 @@ used for 1 Account alignment and TestClass
     //2020.04.29. from the below we can see if the succesfully aligned Accounts were updated properly 
     //when clear the NeedAlignment flag AND we can see if the Opp2be synched were updated succesfully 
     //the opp. -sync monitor would be usefull to see how many Opps. were synched during the alignment.
-    List<Database.SaveResult> dbSres = alocRes.dsrs;
+    List<Database.SaveResult> dbSRes = alocRes.dsrs;
+
+    totalEFOSync = totalEFOSync + alocRes.EarlyFunnel_opps2_sync;  //2020.04.30.
+    totalLFOSybc = totalLFOSybc + alocRes.LateFunnel_opps2_sync;   //2020.04.30.
   }
 
-  global void finish(Database.BatchableContext theBC) {
-    //AccountTerritoryNameBuilder.
+  /**************************************************
+  2020.04.30. Add Early/Late Funnel Opp. sync into to
+  the Comment field of the BJM record 
+  **************************************************/
+  global void finish(Database.BatchableContext theBC) 
+  {
+    String Comment = 'Aligment and Sync. EarlyFunnel OSync = ' + totalEFOSync + ' LateFunnel OSync = ' + totalLFOSybc;
     CreateBatchMonitor(
       theBC.getJobId(),
       'batchProcessAccountAlocator',
       totalSucess,
       totalFailure,
-      'Alignment'
+      Comment
     );
   }
 
@@ -124,7 +135,7 @@ used for 1 Account alignment and TestClass
     thenewBJM.BatchJobID__c = batchJobID;
     thenewBJM.nrofSuccess__c = success;
     thenewBJM.NrofFailures__c = failure;
-    //insert thenewBJM;
+
     Database.upsertresult durs = Database.upsert(
       thenewBJM,
       Batch_Job_Monitor__c.BatchJobID__c,
@@ -152,6 +163,9 @@ used for 1 Account alignment and TestClass
     return bjmi;
   }
 
+  /****************************
+  helper class to check alignm.
+  ****************************/
   public class AlocationResult {
     public integer success;
     public integer failure;
@@ -159,9 +173,16 @@ used for 1 Account alignment and TestClass
     //in order to store DataBase operation
     public List<Database.SaveResult> dsrs;
 
+    //2020.04.30. store Opp sync statistic
+    public integer EarlyFunnel_opps2_sync;
+    public integer LateFunnel_opps2_sync;
+
     public AlocationResult() {
       success = 0;
       failure = 0;
+      
+      EarlyFunnel_opps2_sync = 0; //2020.04.30.
+      LateFunnel_opps2_sync = 0;  //2020.04.30.
     }
 
     public AlocationResult(integer s, integer f) {

@@ -263,4 +263,20 @@ in the START method of the BATCH
 
   }
 
+
+
+  @istest public static void processDBResTest()
+  {
+  //2020.04.30  add test  for processDBSaveResults(List<Database.SaveResult> drsrs, ID bjmID)
+  //breate a BJM  records
+  //crete an update which fail
+  }
+
+
+  @istest public static void processGetTMSpiecesTest()
+  {
+  //2020.04.30. add test for getTMSpiece(String tmsitem)  
+  }
+
+
 }
