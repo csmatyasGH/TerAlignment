@@ -3,7 +3,7 @@
    for each region include in the Account query the fields involved in Territory rules for that GEO
 **************************************************************************************************/
 global class batchProcessAccountTerritory implements Database.Batchable<sObject>, Database.Stateful, schedulable, Database.RaisesPlatformEvents {
-  global String theGEO;
+  global String theGEO;   //the current GEO
   global String allGEOs = 'APAC;LATAM,EMEA;NORAM;CHINA';  
 
   global ID theAccId; //used when testing with 1 account
@@ -558,10 +558,7 @@ Store statictics and call next Batch if exists.
         SyncOppTerritory__c,
         handleMissingTerr__c
         ,List_of_GEO__c
-        ,(Select id,DeveloperName,GeoRelevantFields__c 
-          from TerritoryGeoItems__r
-          where DeveloperName = :currentGEO
-         )
+        //,(Select id,DeveloperName,GeoRelevantFields__c  from TerritoryGeoItems__r where DeveloperName = :currentGEO)
       FROM TerritoryRelevantAFields__mdt
     ]; 
     
@@ -569,6 +566,9 @@ Store statictics and call next Batch if exists.
   }
 
 
+  /**********************************************************
+  invoked from the Finihh method to decide which GEO to call.
+  **********************************************************/
   private String getNextGeo(String currentGeo,String allGeos)
   {
   String[] geos = allGeos.split(';');

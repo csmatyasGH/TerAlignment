@@ -115,7 +115,7 @@ add a new member to the AlocationResult  class to store  the SaveResult list
           SELECT Id, Createddate, StageName, Territory2Id    
           FROM Opportunities
           WHERE
-            CloseDate > TODAY              // isclosed = false
+            isclosed = false              //CloseDate > TODAY
             AND (StageName IN (           //include here all EARLY FUNNEL opportunities which need to be kept in sync
               'Attempting',
               'Inbound',
