@@ -38,7 +38,8 @@ public without sharing class batchPlatformEvErrorTriggerXHandler extends Trigger
         ID bjmID = mapBJId2BJMID.get(evt.AsyncApexJobId);
 
         if (evt.JobScope == null) {
-          Batch_Job_Monitor_Item__c bjmiNE = batchProcessAccountAlocator.createBatchMonitorItem(
+          //Batch_Job_Monitor_Item__c bjmiNE = batchProcessAccountAlocator.createBatchMonitorItem(  //
+            Batch_Job_Monitor_Item__c bjmiNE = batchJobMonitorUtility.createBatchMonitorItem(
             bjmID,
             evt.Message,
             evt.Phase,
@@ -50,7 +51,8 @@ public without sharing class batchPlatformEvErrorTriggerXHandler extends Trigger
 
         for (String item : evt.JobScope.split(',')) {
           //try to create here a BJM_Item records based on ect fields
-          Batch_Job_Monitor_Item__c bjmi = batchProcessAccountAlocator.createBatchMonitorItem(
+          //Batch_Job_Monitor_Item__c bjmi = batchProcessAccountAlocator.createBatchMonitorItem(
+            Batch_Job_Monitor_Item__c bjmi = batchJobMonitorUtility.createBatchMonitorItem(          
             bjmID,
             evt.Message,
             evt.Phase,

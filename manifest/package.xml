@@ -32,7 +32,11 @@
       <!-- old class use it for regression test -->
       <members>AccountTriggerXHandlerTest</members>   
                          
-        <name>ApexClass</name> 
+      <!-- not needed by this project. -->
+      <members>CMT_QueryBuilder</members>               
+      <members>batchSyncOrphanOpps</members>   
+      <members>batchJobMonitorUtility</members>       
+      <name>ApexClass</name> 
     </types>
     <types>
         <members>BatchApexErrorEvents_Trigger</members>
@@ -73,6 +77,9 @@
         <members>TerritoryAllocator__c</members>       <!-- DONE -->
         <members>TerritoryRelevantAFields__mdt</members>
       
+
+        <members>SOQL_Builder__mdt</members>
+        <members>SOQL_Builder_Item__mdt</members>              
         <name>CustomObject</name>
     </types>
     <types>

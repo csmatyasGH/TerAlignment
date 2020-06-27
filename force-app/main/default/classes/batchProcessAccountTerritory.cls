@@ -4,7 +4,7 @@
 **************************************************************************************************/
 global class batchProcessAccountTerritory implements Database.Batchable<sObject>, Database.Stateful, schedulable, Database.RaisesPlatformEvents {
   global String theGEO;   //the current GEO
-  global String allGEOs = 'APAC;LATAM,EMEA;NORAM;CHINA';  
+  global String allGEOs = 'APAC;LATAM;EMEA;NORAM;CHINA';  
 
   global ID theAccId; //used when testing with 1 account
   global integer thelimit; //used when testing
@@ -132,7 +132,8 @@ Collect inner opportunities to detect territory Frozen Accounts
 ***************************************************************/
   global Database.QueryLocator start(Database.BatchableContext bc) {
     Id bcId = bc == NULL?NULL:bc.getJobId();
-    theBJM = batchProcessAccountAlocator.CreateBatchMonitor(
+    //theBJM = batchProcessAccountAlocator.CreateBatchMonitor(  
+    theBJM = batchJobMonitorUtility.CreateBatchMonitor(    
       bcId,
       'batchProcessAccountTerritory',
       0,
@@ -286,9 +287,11 @@ Collect inner opportunities to detect territory Frozen Accounts
     List<Database.saveResult> dbsr;
     if (accounts2update.size() > 0) {
       dbsr = Database.Update(accounts2update);
-      if (theBJM != null && theBJM.comment__c == 'High') {
-        totalUpdated = totalUpdated + ProcessDBSaveResults(dbsr, theBJM.id);
-      }
+      if (theBJM != null && theBJM.comment__c == 'High') 
+        {
+        //totalUpdated = totalUpdated + ProcessDBSaveResults(dbsr, theBJM.id);
+        totalUpdated = totalUpdated + batchJobMonitorUtility.ProcessDBSaveResults(dbsr, theBJM.id);        
+        }
     }
 
     if (synchOpps) {
@@ -431,51 +434,11 @@ call Daniel's invocable to get Opportunity TeamMembers
 
     TerritoryUtil.createOppTeams(opps);
   }
-
-  /**************************************************************************************
-  iterate through SaveResult and in case of error write to BatchJob_MonitorItem or if the
-  parameter2 is NULL just display a debug msg. THIS method  should  be transferred into a
-  generic class where BatchJobMonitor related code are stored to be used by other classes
-  **************************************************************************************/
-  @testvisible
-  public static integer processDBSaveResults(List<Database.SaveResult> drsrs, ID bjmID) {
-    integer retval = 0;
-    List<Batch_Job_Monitor_Item__c> bjmis = new List<Batch_Job_Monitor_Item__c>();
-    for (Database.SaveResult sr : drsrs) {
-      if (sr.isSuccess()) {
-        retval++;
-      } else {
-        for (Database.Error err : sr.getErrors()) 
-        { 
-          String errmsg = err.getMessage();
-          if(bjmID != NULL)
-             {
-              Batch_Job_Monitor_Item__c bjmi = new Batch_Job_Monitor_Item__c();
-              bjmi.Parent_Job_Monitor__c = bjmID;
-              bjmi.Affected_record__c = sr.getId();
-    
-              bjmi.Error_Phase__c = 'EXECUTE-M';
-              bjmi.Message__c = errmsg;
-              bjmis.add(bjmi);
-             }
-          else 
-            {
-            System.Debug('Used durign debug. error: '+ errmsg);
-            }     
-        }
-      }
-    }
-
-    if (BJMIs.size() > 0) {
-      Database.insert(bjmis, false);
-    }
-
-    return retval;
-  }
+ 
 
   /***********************************************
-Store statictics and call next Batch if exists.
-***********************************************/
+  Store statictics and call next Batch if exists.
+  ***********************************************/
   global void finish(Database.BatchableContext bc) {
     String thecomment =
       this.theGEO +
@@ -489,7 +452,9 @@ Store statictics and call next Batch if exists.
       totalFrozen +
       ' Succesfully Updated = ' +
       totalUpdated;
-    batchProcessAccountAlocator.CreateBatchMonitor(
+        
+    //batchProcessAccountAlocator.CreateBatchMonitor(
+    batchJobMonitorUtility.CreateBatchMonitor(      
       bc.getJobId(),
       'batchProcessAccountTerritory',
       totalMatched,
@@ -588,5 +553,47 @@ Store statictics and call next Batch if exists.
 
   return null;     
   }
+
+  /**************************************************************************************
+  iterate through SaveResult and in case of error write to BatchJob_MonitorItem or if the
+  parameter2 is NULL just display a debug msg. THIS method  should  be transferred into a
+  generic class where BatchJobMonitor related code are stored to be used by other classes
+
+  @testvisible
+  public static integer processDBSaveResults(List<Database.SaveResult> drsrs, ID bjmID) {
+    integer retval = 0;
+    List<Batch_Job_Monitor_Item__c> bjmis = new List<Batch_Job_Monitor_Item__c>();
+    for (Database.SaveResult sr : drsrs) {
+      if (sr.isSuccess()) {
+        retval++;
+      } else {
+        for (Database.Error err : sr.getErrors()) 
+        { 
+          String errmsg = err.getMessage();
+          if(bjmID != NULL)
+             {
+              Batch_Job_Monitor_Item__c bjmi = new Batch_Job_Monitor_Item__c();
+              bjmi.Parent_Job_Monitor__c = bjmID;
+              bjmi.Affected_record__c = sr.getId();
+    
+              bjmi.Error_Phase__c = 'EXECUTE-M';
+              bjmi.Message__c = errmsg;
+              bjmis.add(bjmi);
+             }
+          else 
+            {
+            System.Debug('Used durign debug. error: '+ errmsg);
+            }     
+        }
+      }
+    }
+
+    if (BJMIs.size() > 0) {
+      Database.insert(bjmis, false);
+    }
+
+    return retval;
+  }
+  **************************************************************************************/   
 
 }

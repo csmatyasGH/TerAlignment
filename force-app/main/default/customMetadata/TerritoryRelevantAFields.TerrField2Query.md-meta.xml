@@ -16,7 +16,7 @@
     </values>
     <values>
         <field>Date2StartAlignment__c</field>
-        <value xsi:type="xsd:date">2019-08-31</value>
+        <value xsi:type="xsd:date">2018-08-31</value>
     </values>
     <values>
         <field>EMEA_TRF_List__c</field>
@@ -24,7 +24,7 @@
     </values>
     <values>
         <field>FieldList__c</field>
-        <value xsi:type="xsd:string">Account_FTE__c,BillingCountry,Employee_Count__c,Name4Terr__c,Org_Type__c,Primary_Business__c,segment__c,Top_Parent_Billing_Country__c,Top_Parent_Billing_Location__c,ShippingCountry,Top_Domestic_Parent_Billing_Location__c,Top_Parent_Account_FTE__c,Top_Parent_Employee_Count__c,ShippingPostalCode,Org_Size__c,Parent_Account_Segment__c,Sector__c,ShippingPostalCode4Terr__c,ShippingState,Top_Parent_Org_Size__c</value>
+        <value xsi:type="xsd:string">Institution_FTE__c,Account_FTE__c,BillingCountry,Employee_Count__c,Name4Terr__c,Org_Type__c,Primary_Business__c,segment__c,Top_Parent_Billing_Country__c,Top_Parent_Billing_Location__c,ShippingCountry,Top_Domestic_Parent_Billing_Location__c,Top_Parent_Account_FTE__c,Top_Parent_Employee_Count__c,ShippingPostalCode,Org_Size__c,Parent_Account_Segment__c,Sector__c,ShippingPostalCode4Terr__c,ShippingState,Top_Parent_Org_Size__c</value>
     </values>
     <values>
         <field>HUB_ITEM_RT__c</field>
@@ -33,6 +33,10 @@
     <values>
         <field>LATAM_TRF_List__c</field>
         <value xsi:type="xsd:string">Org_Type__c,TerritorySegment__c,ShippingCountry</value>
+    </values>
+    <values>
+        <field>List_of_GEO__c</field>
+        <value xsi:type="xsd:string">APAC;LATAM,EMEA;NORAM;CHINA</value>
     </values>
     <values>
         <field>NORAM_TRF_List__c</field>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ObjectName__c</fullName>
+    <description>if this is equal with theObjecTName of  the Parent  this  is the main objec to query for. Otherwise is an inner query</description>
+    <externalId>false</externalId>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <label>ObjectName</label>
+    <referenceTo>EntityDefinition</referenceTo>
+    <relationshipLabel>SOQLBuilderItems</relationshipLabel>
+    <relationshipName>SOQLBuilderItems</relationshipName>
+    <required>false</required>
+    <type>MetadataRelationship</type>
+    <unique>false</unique>
+</CustomField>

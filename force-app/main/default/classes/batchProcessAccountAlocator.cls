@@ -27,7 +27,7 @@ used for 1 Account alignment and TestClass
 
   global Database.QueryLocator start(Database.BatchableContext theBC) {
     //AccountTerritoryNameBuilder.
-    CreateBatchMonitor(
+    batchJobMonitorUtility.CreateBatchMonitor(
       theBC.getJobId(),
       'batchProcessAccountAlocator',
       0,
@@ -92,12 +92,14 @@ used for 1 Account alignment and TestClass
   global void finish(Database.BatchableContext theBC) 
   {
     String Comment = 'Aligment and Sync. EarlyFunnel OSync = ' + totalEFOSync + ' LateFunnel OSync = ' + totalLFOSybc;
-    CreateBatchMonitor(
+    batchJobMonitorUtility.CreateBatchMonitor(
       theBC.getJobId(),
       'batchProcessAccountAlocator',
       totalSucess,
       totalFailure,
       Comment
+
+      //maybe call from here the batchSyncOrphanOpps 
     );
   }
 
@@ -105,7 +107,7 @@ used for 1 Account alignment and TestClass
 
   /***********************************************************************************************************************************************
   In case we have an active Parent BJM for this class create a worker BJM.
-  ***********************************************************************************************************************************************/
+
   public static Batch_Job_Monitor__c createBatchMonitor(
     Id batchJobID,
     String batchClassName,
@@ -144,10 +146,11 @@ used for 1 Account alignment and TestClass
     thenewBJM.comment__c = parentBJMs[0].Log_Level__c; //just to pass the loglevel back to caller
     return thenewBJM;
   }
+  ***********************************************************************************************************************************************/  
 
   /********************************************************************************************************************
   will bwe called from BatchApexErrorEvents_Trigger
-  ********************************************************************************************************************/
+
   public static Batch_Job_Monitor_Item__c createBatchMonitorItem(
     ID bjmID,
     String themsg,
@@ -162,6 +165,7 @@ used for 1 Account alignment and TestClass
 
     return bjmi;
   }
+  ********************************************************************************************************************/  
 
   /****************************
   helper class to check alignm.

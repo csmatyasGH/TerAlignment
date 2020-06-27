@@ -34,3 +34,12 @@ Azt is akarom hogy hozzaadok valami  a remote  branch hez  es azt PULL ozom de n
 
 23:58   NEM lehet push -olni  branch-ek kozott. A local XYZ  branch-bol csak a megfelelo REMOTE XYZ  branch-be tudom push olni a dolgokat.  Szerintem branch  ek kozott csak pull request ill/  merge  parancs-al tudok kodot mozgatni. 
 
+2020.04.29.  DEV_BRANCH_LOCAL was merget to master (azt hiszem ez nem volt tokeletes. nem tiszta  hogy  a lokalis  DV  branch et  mergeltem a Remote Master  hez vagya mokalis master hez)  meg tudnam nezni ha atvaltk a lokal  master-re
+DE EZ NEM MEGY. a Remote  Master  re se tudok innen valtani  
+
+kozben csinaltam 1  uj lokalis branch  et ahoba uj kodot irtam.  A cel hogy  az AlignCheck methodust  kibovitsem es tudjam merni az opp  sync  statisztikat
+
+Ha a 2 lokalis DEB_BRANCH kozott valtogatok szepen latom hogy mas a kod. EDDIG JO.  
+
+
+

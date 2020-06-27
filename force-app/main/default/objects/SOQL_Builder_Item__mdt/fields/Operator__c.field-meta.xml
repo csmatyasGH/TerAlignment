@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Operator__c</fullName>
+    <description>used when item Type  is WHERE clause</description>
+    <externalId>false</externalId>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <label>Operator</label>
+    <required>false</required>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>EQUAL</fullName>
+                <default>true</default>
+                <label>EQUAL</label>
+            </value>
+            <value>
+                <fullName>NOT EQUAL</fullName>
+                <default>false</default>
+                <label>NOT EQUAL</label>
+            </value>
+            <value>
+                <fullName>GRATER</fullName>
+                <default>false</default>
+                <label>GRATER</label>
+            </value>
+            <value>
+                <fullName>LESS</fullName>
+                <default>false</default>
+                <label>LESS</label>
+            </value>
+            <value>
+                <fullName>CONTAINS</fullName>
+                <default>false</default>
+                <label>CONTAINS</label>
+            </value>
+            <value>
+                <fullName>STARTSWITH</fullName>
+                <default>false</default>
+                <label>STARTSWITH</label>
+            </value>
+            <value>
+                <fullName>IN</fullName>
+                <default>false</default>
+                <label>IN</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

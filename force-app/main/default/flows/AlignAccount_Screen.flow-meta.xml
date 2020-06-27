@@ -494,13 +494,7 @@
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
     </screens>
-    <start>
-        <locationX>50</locationX>
-        <locationY>50</locationY>
-        <connector>
-            <targetReference>GetCurrentAlignment</targetReference>
-        </connector>
-    </start>
+    <startElementReference>GetCurrentAlignment</startElementReference>
     <status>Active</status>
     <variables>
         <description>store the GEO of the Account. Palnned to pass it to Flow  form current record (somehow)</description>

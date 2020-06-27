@@ -129,7 +129,8 @@ public class batchProcessAccountAlocator_Test {
       'We expect 1 Batch Job monitor record'
     );
 
-    Batch_Job_Monitor__c workeru = batchProcessAccountAlocator.createBatchMonitor(
+    //Batch_Job_Monitor__c workeru = batchProcessAccountAlocator.createBatchMonitor(  
+    Batch_Job_Monitor__c workeru = batchJobMonitorUtility.createBatchMonitor(    
       headeru.id,
       'batchu',
       1,
@@ -139,7 +140,7 @@ public class batchProcessAccountAlocator_Test {
     system.assertNotEquals(
       null,
       workeru.id,
-      'We expect 1 BJM record to be creaetd by the method createBatchMonitor'
+      'We expect 1 BJM record to be created by the method createBatchMonitor'
     );
 
     List<Batch_Job_Monitor__c> bjms = [
@@ -159,8 +160,9 @@ public class batchProcessAccountAlocator_Test {
       'BJM should contain 0 failure'
     );
 
-    //add code to test Create BJMItem
-    Batch_Job_Monitor_Item__c bjmi = batchProcessAccountAlocator.createBatchMonitorItem(
+    //add code to test Create BJMItem  
+    //Batch_Job_Monitor_Item__c bjmi = batchProcessAccountAlocator.createBatchMonitorItem(
+    Batch_Job_Monitor_Item__c bjmi = batchJobMonitorUtility.createBatchMonitorItem(      
       BJMs[0].id,
       'String themsg',
       'String thePhase',

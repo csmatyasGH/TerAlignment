@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>itemType__c</fullName>
+    <externalId>false</externalId>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <label>itemType</label>
+    <required>false</required>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>QueryField</fullName>
+                <default>true</default>
+                <label>QueryField</label>
+            </value>
+            <value>
+                <fullName>WhereClause</fullName>
+                <default>false</default>
+                <label>WhereClause</label>
+            </value>
+            <value>
+                <fullName>GroupBy</fullName>
+                <default>false</default>
+                <label>GroupBy</label>
+            </value>
+            <value>
+                <fullName>HavingClause</fullName>
+                <default>false</default>
+                <label>HavingClause</label>
+            </value>
+            <value>
+                <fullName>Limit</fullName>
+                <default>false</default>
+                <label>Limit</label>
+            </value>
+            <value>
+                <fullName>Advanced Where Logic</fullName>
+                <default>false</default>
+                <label>Advanced Where Logic</label>
+            </value>
+            <value>
+                <fullName>Advanced Having Logic</fullName>
+                <default>false</default>
+                <label>Advanced Having Logic</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>
